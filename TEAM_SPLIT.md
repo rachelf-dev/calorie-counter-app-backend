@@ -181,7 +181,7 @@ export interface DailyLog {
 
 | Day | Developer A | Developer B |
 |-----|-------------|-------------|
-| 1 ✓ | Backend setup + User model + Auth middleware + `seed-admin.js` | Angular setup + NgRx + RTL + routing |
+| 1 ✓ | Backend setup + User model + Auth middleware + `seed-admin.js` | Angular setup + NgRx + RTL + routing ✓ |
 | 2 | Auth routes (register/login) + `api.models.ts` | Product model + product routes + seed.js |
 | 3 | User routes + multer upload | Log model + log routes + basket logic |
 | 4 | Login/Register components (Reactive Forms) | Dashboard + ProductSearch + ProgressBar |
