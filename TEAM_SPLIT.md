@@ -39,7 +39,7 @@ routes/ + controllers/
 ```
 core/
   ├── guards/auth.guard.ts + admin.guard.ts
-  ├── interceptors/jwt.interceptor.ts
+  ├── interceptors/app.interceptor.ts
   └── services/auth.service.ts + user.service.ts
 
 store/auth/
@@ -57,7 +57,7 @@ shared/navbar/navbar.component.ts           <- show links based on user role
 ```
 
 ### What Developer A gives to Developer B:
-> A file `api-contracts.ts` (see below) with TypeScript types for all API responses.
+> A file `api.models.ts` (see below) with TypeScript types for all API responses.
 > Developer B uses these types and does not need to wait for the real server.
 
 ---
@@ -111,7 +111,7 @@ shared/product-search/product-search.component.ts  <- autocomplete + debounce
 
 ---
 
-## API Contract (api-contracts.ts) — Agreed on Day 1, Never Changes
+## API Contract (api.models.ts) — Agreed on Day 1, Never Changes
 
 > Both developers agree on this file before writing any code.
 
@@ -136,11 +136,16 @@ export interface AuthResponse {
   user: User;
 }
 
+export interface ServingSize {
+  unit: string;
+  weightInGrams: number;
+}
+
 export interface Product {
   _id: string;
   name: string;
   caloriesPer100g: number;
-  servingSizes: Record<string, number>;
+  servingSizes: ServingSize[];
   imageUrl?: string;
   createdBy: string | null;
 }
@@ -172,7 +177,7 @@ export interface DailyLog {
 | Day | Developer A | Developer B |
 |-----|-------------|-------------|
 | 1 | Backend setup + User model + Auth middleware | Angular setup + NgRx + RTL + routing |
-| 2 | Auth routes (register/login) + `api-contracts.ts` | Product model + product routes + seed.js |
+| 2 | Auth routes (register/login) + `api.models.ts` | Product model + product routes + seed.js |
 | 3 | User routes + multer upload | Log model + log routes + basket logic |
 | 4 | Login/Register components (Reactive Forms) | Dashboard + ProductSearch + ProgressBar |
 | 5 | Profile component + Auth guards + JWT interceptor | History + ng2-charts + My Products |
