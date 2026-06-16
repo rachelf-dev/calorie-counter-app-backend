@@ -22,24 +22,27 @@
 ### Backend
 ```
 middleware/
-  ├── auth.middleware.js        <- checks JWT token
-  ├── admin.middleware.js       <- checks if user is admin
-  ├── logger.middleware.js      <- factory function (required!)
-  └── upload.middleware.js      <- multer file uploads
+  ├── auth.middleware.js        <- checks JWT token          [Day 1 ✓]
+  ├── admin.middleware.js       <- checks if user is admin   [Day 1 ✓]
+  ├── logger.middleware.js      <- factory function (required!) [Hour 0 ✓]
+  └── upload.middleware.js      <- multer file uploads       [Day 3]
 
 models/
-  └── User.js                   <- pre('save') hash password + toJSON
+  └── User.js                   <- pre('save') hash password + toJSON [Day 1 ✓]
+
+scripts/
+  └── seed-admin.js             <- create first admin from .env [Day 1 ✓]
 
 routes/ + controllers/
-  ├── auth.routes.js + auth.controller.js    <- register, login
-  └── user.routes.js + user.controller.js    <- profile, profile image, admin user management
+  ├── auth.routes.js + auth.controller.js    <- register, login [Day 2]
+  └── user.routes.js + user.controller.js    <- profile, profile image, admin user management [Day 3]
 ```
 
 ### Frontend
 ```
 core/
   ├── guards/auth.guard.ts + admin.guard.ts
-  ├── interceptors/app.interceptor.ts
+  ├── interceptors/app.interceptor.ts   <- JWT injection + global error handling (single interceptor)
   └── services/auth.service.ts + user.service.ts
 
 store/auth/
@@ -57,7 +60,7 @@ shared/navbar/navbar.component.ts           <- show links based on user role
 ```
 
 ### What Developer A gives to Developer B:
-> A file `api.models.ts` (see below) with TypeScript types for all API responses.
+> A file `api.models.ts` at `src/app/core/models/api.models.ts` (see below) with TypeScript types for all API responses.
 > Developer B uses these types and does not need to wait for the real server.
 
 ---
@@ -114,6 +117,8 @@ shared/product-search/product-search.component.ts  <- autocomplete + debounce
 ## API Contract (api.models.ts) — Agreed on Day 1, Never Changes
 
 > Both developers agree on this file before writing any code.
+> **Source of truth**: aligned with `.cursorrules` / `PLAN.md`.
+> `Product.servingSizes` is always an array of `{ unit, weightInGrams }` — in Mongoose, seed script, API responses, Angular models, and UnitSelector.
 
 ```typescript
 // src/app/core/models/api.models.ts
@@ -176,14 +181,25 @@ export interface DailyLog {
 
 | Day | Developer A | Developer B |
 |-----|-------------|-------------|
-| 1 | Backend setup + User model + Auth middleware | Angular setup + NgRx + RTL + routing |
+| 1 ✓ | Backend setup + User model + Auth middleware + `seed-admin.js` | Angular setup + NgRx + RTL + routing |
 | 2 | Auth routes (register/login) + `api.models.ts` | Product model + product routes + seed.js |
 | 3 | User routes + multer upload | Log model + log routes + basket logic |
 | 4 | Login/Register components (Reactive Forms) | Dashboard + ProductSearch + ProgressBar |
-| 5 | Profile component + Auth guards + JWT interceptor | History + ng2-charts + My Products |
+| 5 | Profile component + Auth guards + `app.interceptor.ts` | History + ng2-charts + My Products |
 | 6 | Navbar + NgRx auth store | Admin component + email service + cron job |
 | 7 | Test Auth flow + integration | Test Products/Logs flow + integration |
 | 8 | Final merge + integration + README | Final merge + integration + README |
+
+### Developer A — Day 1 completed (Backend)
+
+- [x] `backend/index.js`, `config/db.js`, `.env`, packages (`Hour 0`)
+- [x] `middleware/logger.middleware.js`
+- [x] `models/User.js` — `pre('save')`, `static findByEmailWithPassword`, `toJSON`
+- [x] `middleware/auth.middleware.js` — JWT → `req.user = { id, role }`
+- [x] `middleware/admin.middleware.js`
+- [x] `scripts/seed-admin.js` + `npm run seed:admin`
+- [ ] Auth routes (`Day 2`)
+- [ ] User routes + multer (`Day 3`)
 
 ---
 
