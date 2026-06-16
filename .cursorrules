@@ -511,7 +511,7 @@ API_URL=http://localhost:3000/api
 ```
 
 ---
-
+- **Task & Role Management:** Global task delegation and ownership between Developer A and Developer B are maintained in `TEAM_SPLIT.md` at the project root. Always respect these assignments when generating code.
 ## תאימות לדרישות המורה — סיכום
 
 - CRUD — כל 4 פעולות על Products, Users, DailyLogs
@@ -534,3 +534,6 @@ API_URL=http://localhost:3000/api
 - **Custom Pipe** — `CalorieFormatPipe` (`shared/pipes/calorie-format.pipe.ts`)
 - **Custom Directive** — `CalorieWarningDirective` (`shared/directives/calorie-warning.directive.ts`)
 - **HTTP Interceptor** — `AppInterceptor` (JWT injection + Error handling עם toastr)
+
+
+
