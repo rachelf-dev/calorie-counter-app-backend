@@ -5,6 +5,7 @@ const dotenv = require('dotenv');
 
 const connectDB = require('./config/db');
 const createLogger = require('./middleware/logger.middleware');
+const authRoutes = require('./routes/auth.routes');
 
 dotenv.config();
 
@@ -23,6 +24,8 @@ app.get('/api/health', (req, res) => {
     service: 'calorie-counter-backend',
   });
 });
+
+app.use('/api/auth', authRoutes);
 
 app.use((req, res) => {
   res.status(404).json({ message: 'Route not found' });
