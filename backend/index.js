@@ -5,6 +5,7 @@ const dotenv = require('dotenv');
 
 const connectDB = require('./config/db');
 const createLogger = require('./middleware/logger.middleware');
+const authRoutes = require('./routes/auth.routes');
 
 dotenv.config();
 
@@ -24,6 +25,7 @@ app.get('/api/health', (req, res) => {
   });
 });
 
+app.use('/api/auth', authRoutes);
 app.use('/api/products', require('./routes/product.routes'));
 
 app.use((req, res) => {
