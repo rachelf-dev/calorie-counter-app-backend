@@ -5,9 +5,3 @@ logs/*
 uploads/*
 !uploads/.gitkeep
 npm-debug.log*
-node_modules/
-.env
-logs/*
-!logs/.gitkeep
-uploads/*
-!uploads/.gitkeep
