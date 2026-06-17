@@ -27,6 +27,7 @@ app.get('/api/health', (req, res) => {
 
 app.use('/api/auth', authRoutes);
 app.use('/api/products', require('./routes/product.routes'));
+app.use('/api/logs', require('./routes/log.routes'));
 
 app.use((req, res) => {
   res.status(404).json({ message: 'Route not found' });
