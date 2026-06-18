@@ -27,12 +27,22 @@ app.get('/api/health', (req, res) => {
 
 app.use('/api/auth', authRoutes);
 app.use('/api/products', require('./routes/product.routes'));
+app.use('/api/users', require('./routes/user.routes'));
 
 app.use((req, res) => {
   res.status(404).json({ message: 'Route not found' });
 });
 
 app.use((err, req, res, next) => {
+  if (err.name === 'MulterError') {
+    const message =
+      err.code === 'LIMIT_FILE_SIZE'
+        ? 'Image must be 2MB or smaller'
+        : err.message;
+
+    return res.status(400).json({ message });
+  }
+
   const statusCode = err.statusCode || 500;
 
   res.status(statusCode).json({
