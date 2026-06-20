@@ -1,46 +1,35 @@
 const express = require('express');
-const { body, validationResult } = require('express-validator');
+const { body, param } = require('express-validator');
 
+const productController = require('../controllers/product.controller');
 const auth = require('../middleware/auth.middleware');
-const {
-  getProducts,
-  getMyProducts,
-  createProduct,
-  deleteProduct,
-} = require('../controllers/product.controller');
+const validate = require('../middleware/validate.middleware');
 
 const router = express.Router();
 
-const validateCreateProduct = [
-  body('name').trim().notEmpty().withMessage('Product name is required'),
+const createProductValidators = [
+  body('name').trim().notEmpty().withMessage('Name is required'),
   body('caloriesPer100g')
     .isFloat({ min: 0 })
-    .withMessage('caloriesPer100g must be a number greater than or equal to 0'),
-  body('servingSizes')
-    .isArray({ min: 1 })
-    .withMessage('At least one serving size is required'),
-  body('servingSizes.*.unit').trim().notEmpty().withMessage('Each serving size must have a unit'),
+    .withMessage('Calories per 100g must be a positive number'),
+  body('servingSizes').isArray({ min: 1 }).withMessage('At least one serving size is required'),
+  body('servingSizes.*.unit').trim().notEmpty().withMessage('Serving size unit is required'),
   body('servingSizes.*.weightInGrams')
     .isFloat({ min: 0 })
-    .withMessage('Each serving size must have a valid weightInGrams'),
-  body('imageUrl').optional({ values: 'falsy' }).trim(),
-  (req, res, next) => {
-    const errors = validationResult(req);
-
-    if (!errors.isEmpty()) {
-      return res.status(400).json({
-        message: errors.array()[0].msg,
-        errors: errors.array(),
-      });
-    }
-
-    return next();
-  },
+    .withMessage('Serving size weight must be a positive number'),
+  body('imageUrl').optional({ values: 'falsy' }).isString().withMessage('Image URL must be a string'),
 ];
 
-router.get('/my', auth, getMyProducts);
-router.get('/', auth, getProducts);
-router.post('/', auth, validateCreateProduct, createProduct);
-router.delete('/:id', auth, deleteProduct);
+router.use(auth);
+
+router.get('/', productController.getProducts);
+router.get('/my', productController.getMyProducts);
+router.post('/', createProductValidators, validate, productController.createProduct);
+router.delete(
+  '/:id',
+  param('id').isMongoId().withMessage('Invalid product id'),
+  validate,
+  productController.deleteProduct
+);
 
 module.exports = router;

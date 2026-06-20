@@ -1,94 +1,98 @@
-const path = require('path');
+require('dotenv').config();
+
 const fs = require('fs');
+const path = require('path');
 const csv = require('csv-parser');
 const mongoose = require('mongoose');
-const dotenv = require('dotenv');
 
-dotenv.config({ path: path.join(__dirname, '..', '.env') });
-
+const connectDB = require('../config/db');
 const Product = require('../models/Product');
 
 const CSV_PATH = path.join(__dirname, '..', 'data', 'products.csv');
 
-const SERVING_COLUMNS = ['teaspoon', 'tablespoon', 'cup', 'slice', 'single'];
+const UNIT_COLUMNS = ['teaspoon', 'tablespoon', 'cup', 'slice', 'single'];
 
 function buildServingSizes(row) {
   const servingSizes = [];
 
-  for (const unit of SERVING_COLUMNS) {
-    const raw = row[unit];
-    if (raw !== undefined && raw !== '') {
-      const weightInGrams = parseFloat(raw);
-      if (!isNaN(weightInGrams) && weightInGrams > 0) {
-        servingSizes.push({ unit, weightInGrams });
-      }
-    }
-  }
+  for (const unit of UNIT_COLUMNS) {
+    const rawValue = row[unit];
 
-  servingSizes.push({ unit: 'grams', weightInGrams: 1 });
+    if (rawValue === undefined || rawValue === null || String(rawValue).trim() === '') {
+      continue;
+    }
+
+    const weightInGrams = Number(rawValue);
+
+    if (!Number.isFinite(weightInGrams) || weightInGrams <= 0) {
+      continue;
+    }
+
+    servingSizes.push({ unit, weightInGrams });
+  }
 
   return servingSizes;
 }
 
-function parseProducts(csvPath) {
+function readProductsFromCsv() {
   return new Promise((resolve, reject) => {
     const products = [];
-    let skipped = 0;
 
-    fs.createReadStream(csvPath)
+    fs.createReadStream(CSV_PATH)
       .pipe(csv())
       .on('data', (row) => {
-        const caloriesPer100g = parseFloat(row['calories per 100 grams']);
+        const name = (row.name || '').trim();
+        const caloriesPer100g = Number(row['calories per 100 grams']);
 
-        if (isNaN(caloriesPer100g) || caloriesPer100g <= 0) {
-          skipped++;
-          return;
-        }
-
-        const name = row['name'] ? row['name'].trim() : '';
-        if (!name) {
-          skipped++;
+        if (!name || !Number.isFinite(caloriesPer100g)) {
           return;
         }
 
         products.push({
           name,
           caloriesPer100g,
-          imageUrl: row['url'] ? row['url'].trim() : undefined,
           servingSizes: buildServingSizes(row),
+          imageUrl: (row.url || '').trim() || undefined,
           createdBy: null,
         });
       })
-      .on('end', () => resolve({ products, skipped }))
+      .on('end', () => resolve(products))
       .on('error', reject);
   });
 }
 
 async function seed() {
-  const mongoUri = process.env.MONGO_URI;
-  if (!mongoUri) {
-    console.error('Error: MONGO_URI is missing from .env');
-    process.exit(1);
+  if (!fs.existsSync(CSV_PATH)) {
+    throw new Error(`CSV file not found at ${CSV_PATH}`);
   }
 
-  await mongoose.connect(mongoUri);
-  console.log('Connected to MongoDB');
+  await connectDB();
 
-  const deleted = await Product.deleteMany({ createdBy: null });
-  console.log(`Deleted ${deleted.deletedCount} existing global products`);
+  const products = await readProductsFromCsv();
 
-  const { products, skipped } = await parseProducts(CSV_PATH);
+  if (products.length === 0) {
+    console.log('No valid products found in CSV. Nothing to seed.');
+    await mongoose.disconnect();
+    return;
+  }
 
-  await Product.insertMany(products);
+  const { deletedCount } = await Product.deleteMany({ createdBy: null });
+  console.log(`Removed ${deletedCount} existing global products`);
 
-  console.log(`Skipped ${skipped} products (missing name or calories)`);
-  console.log(`Seeded ${products.length} products successfully`);
+  const inserted = await Product.insertMany(products);
+  console.log(`Seeded ${inserted.length} global products`);
 
   await mongoose.disconnect();
-  process.exit(0);
 }
 
-seed().catch((err) => {
-  console.error('Seed failed:', err.message);
+seed().catch(async (error) => {
+  console.error('Failed to seed products:', error.message);
+
+  try {
+    await mongoose.disconnect();
+  } catch {
+    // Ignore disconnect errors after a failed seed.
+  }
+
   process.exit(1);
 });

@@ -1,0 +1,1 @@
+import{Va as t,fb as n,gb as i,pb as p}from"./chunk-4WKG7KAP.js";var r=class o{static \u0275fac=function(e){return new(e||o)};static \u0275cmp=t({type:o,selectors:[["app-profile"]],decls:2,vars:0,template:function(e,l){e&1&&(n(0,"p"),p(1,"Profile \u2014 Day 5 (Developer A)"),i())},encapsulation:2})};export{r as ProfileComponent};

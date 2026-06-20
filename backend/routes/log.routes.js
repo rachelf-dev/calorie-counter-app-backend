@@ -1,55 +1,33 @@
 const express = require('express');
-const { body, param, validationResult } = require('express-validator');
+const { body, param } = require('express-validator');
 
+const logController = require('../controllers/log.controller');
 const auth = require('../middleware/auth.middleware');
-const {
-  getToday,
-  getLogByDate,
-  getHistory,
-  addToBasket,
-  removeFromBasket,
-} = require('../controllers/log.controller');
+const validate = require('../middleware/validate.middleware');
 
 const router = express.Router();
 
-function handleValidationErrors(req, res, next) {
-  const errors = validationResult(req);
+const dateValidator = param('date')
+  .matches(/^\d{4}-\d{2}-\d{2}$/)
+  .withMessage('Date must be in YYYY-MM-DD format');
 
-  if (!errors.isEmpty()) {
-    return res.status(400).json({
-      message: errors.array()[0].msg,
-      errors: errors.array(),
-    });
-  }
-
-  return next();
-}
-
-const validateAddToBasket = [
-  body('productId').isMongoId().withMessage('Valid productId is required'),
+const addToBasketValidators = [
+  body('productId').isMongoId().withMessage('A valid product id is required'),
   body('unit').trim().notEmpty().withMessage('Unit is required'),
-  body('quantity')
-    .isFloat({ min: 0.01 })
-    .withMessage('Quantity must be greater than 0'),
-  handleValidationErrors,
+  body('quantity').isFloat({ gt: 0 }).withMessage('Quantity must be greater than 0'),
 ];
 
-const validateDateParam = [
-  param('date')
-    .matches(/^\d{4}-\d{2}-\d{2}$/)
-    .withMessage('Date must be in YYYY-MM-DD format'),
-  handleValidationErrors,
-];
+router.use(auth);
 
-const validateItemIdParam = [
-  param('itemId').isMongoId().withMessage('Valid itemId is required'),
-  handleValidationErrors,
-];
-
-router.get('/today', auth, getToday);
-router.get('/history', auth, getHistory);
-router.post('/add', auth, validateAddToBasket, addToBasket);
-router.delete('/item/:itemId', auth, validateItemIdParam, removeFromBasket);
-router.get('/:date', auth, validateDateParam, getLogByDate);
+router.get('/today', logController.getToday);
+router.get('/history', logController.getHistory);
+router.get('/:date', dateValidator, validate, logController.getLogByDate);
+router.post('/add', addToBasketValidators, validate, logController.addToBasket);
+router.delete(
+  '/item/:itemId',
+  param('itemId').isMongoId().withMessage('Invalid item id'),
+  validate,
+  logController.removeFromBasket
+);
 
 module.exports = router;

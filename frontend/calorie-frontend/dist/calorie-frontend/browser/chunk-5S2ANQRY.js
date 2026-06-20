@@ -1,0 +1,1 @@
+import{Va as t,fb as n,gb as r,pb as m}from"./chunk-4WKG7KAP.js";var p=class o{static \u0275fac=function(e){return new(e||o)};static \u0275cmp=t({type:o,selectors:[["app-product-form"]],decls:2,vars:0,template:function(e,a){e&1&&(n(0,"p"),m(1,"Product Form \u2014 Day 5 (Developer B)"),r())},encapsulation:2})};export{p as ProductFormComponent};

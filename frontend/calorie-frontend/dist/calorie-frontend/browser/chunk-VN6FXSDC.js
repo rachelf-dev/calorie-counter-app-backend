@@ -1,0 +1,1 @@
+import{Va as o,fb as t,gb as i,pb as a}from"./chunk-4WKG7KAP.js";var p=class n{static \u0275fac=function(e){return new(e||n)};static \u0275cmp=o({type:n,selectors:[["app-login"]],decls:2,vars:0,template:function(e,s){e&1&&(t(0,"p"),a(1,"Login \u2014 Day 4 (Developer A)"),i())},encapsulation:2})};export{p as LoginComponent};
