@@ -37,8 +37,8 @@ import {
   platformBrowser,
   provideProtractorTestingSupport
 } from "./chunk-ZKTDNF6H.js";
-import "./chunk-CVEH2A25.js";
 import "./chunk-YGO37SZP.js";
+import "./chunk-CVEH2A25.js";
 import {
   getDOM
 } from "./chunk-SCH5VNI4.js";

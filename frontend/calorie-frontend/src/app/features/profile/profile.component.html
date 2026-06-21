@@ -1,0 +1,125 @@
+<div class="profile-page">
+  <mat-card class="profile-card">
+    <mat-card-header>
+      <mat-card-title>הפרופיל שלי</mat-card-title>
+      <mat-card-subtitle>עריכת פרטים אישיים ויעד קלוריות</mat-card-subtitle>
+    </mat-card-header>
+
+    @if (loading()) {
+      <mat-progress-bar mode="indeterminate" />
+    }
+
+    <mat-card-content>
+      <section class="image-section">
+        <div class="avatar-wrapper">
+          @if (profileImageUrl()) {
+            <img [src]="profileImageUrl()" alt="תמונת פרופיל" class="avatar-image" />
+          } @else {
+            <div class="avatar-placeholder">
+              <mat-icon>person</mat-icon>
+            </div>
+          }
+        </div>
+
+        <div class="image-actions">
+          <input
+            #fileInput
+            type="file"
+            accept="image/jpeg,image/png,image/webp"
+            hidden
+            (change)="onImageSelected($event)"
+          />
+          <button
+            mat-stroked-button
+            type="button"
+            [disabled]="imageLoading()"
+            (click)="fileInput.click()"
+          >
+            <mat-icon>photo_camera</mat-icon>
+            {{ imageLoading() ? 'מעלה...' : 'העלאת תמונה' }}
+          </button>
+          @if (imageLoading()) {
+            <mat-progress-bar mode="indeterminate" class="image-progress" />
+          }
+        </div>
+      </section>
+
+      <form [formGroup]="form" (ngSubmit)="onSubmit()">
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>שם מלא</mat-label>
+          <input matInput formControlName="name" autocomplete="name" />
+          @if (form.controls.name.hasError('required') && form.controls.name.touched) {
+            <mat-error>שם הוא שדה חובה</mat-error>
+          }
+          @if (form.controls.name.hasError('minlength') && form.controls.name.touched) {
+            <mat-error>שם חייב להכיל לפחות 2 תווים</mat-error>
+          }
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>אימייל</mat-label>
+          <input matInput [value]="email()" readonly disabled />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>יעד קלוריות יומי</mat-label>
+          <input matInput type="number" formControlName="calorieGoal" min="1" />
+          @if (form.controls.calorieGoal.hasError('required') && form.controls.calorieGoal.touched) {
+            <mat-error>יעד קלוריות הוא שדה חובה</mat-error>
+          }
+          @if (form.controls.calorieGoal.hasError('min') && form.controls.calorieGoal.touched) {
+            <mat-error>יעד קלוריות חייב להיות לפחות 1</mat-error>
+          }
+        </mat-form-field>
+
+        <div class="row-fields">
+          <mat-form-field appearance="outline" class="half-width">
+            <mat-label>גיל</mat-label>
+            <input matInput type="number" formControlName="age" min="0" />
+            @if (form.controls.age.hasError('min') && form.controls.age.touched) {
+              <mat-error>גיל לא יכול להיות שלילי</mat-error>
+            }
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="half-width">
+            <mat-label>מין</mat-label>
+            <mat-select formControlName="gender">
+              <mat-option value="">לא צוין</mat-option>
+              @for (option of genderOptions; track option.value) {
+                <mat-option [value]="option.value">{{ option.label }}</mat-option>
+              }
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <div class="row-fields">
+          <mat-form-field appearance="outline" class="half-width">
+            <mat-label>משקל (ק״ג)</mat-label>
+            <input matInput type="number" formControlName="weight" min="0" />
+            @if (form.controls.weight.hasError('min') && form.controls.weight.touched) {
+              <mat-error>משקל לא יכול להיות שלילי</mat-error>
+            }
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="half-width">
+            <mat-label>גובה (ס״מ)</mat-label>
+            <input matInput type="number" formControlName="height" min="0" />
+            @if (form.controls.height.hasError('min') && form.controls.height.touched) {
+              <mat-error>גובה לא יכול להיות שלילי</mat-error>
+            }
+          </mat-form-field>
+        </div>
+
+        <button
+          mat-flat-button
+          color="primary"
+          type="submit"
+          class="submit-btn full-width"
+          [disabled]="loading() || form.invalid"
+        >
+          שמירת שינויים
+        </button>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>

@@ -1,19 +1,36 @@
-import { HttpInterceptorFn } from '@angular/common/http';
+import { HttpErrorResponse, HttpInterceptorFn } from '@angular/common/http';
 import { inject } from '@angular/core';
+import { Router } from '@angular/router';
+import { catchError, throwError } from 'rxjs';
+import { ToastrService } from 'ngx-toastr';
 
 import { AuthService } from '../services/auth.service';
 
-/** JWT injection only — full error handling comes in Developer A Day 5. */
 export const appInterceptor: HttpInterceptorFn = (req, next) => {
-  const token = inject(AuthService).getToken();
+  const authService = inject(AuthService);
+  const toastr = inject(ToastrService);
+  const router = inject(Router);
 
-  if (!token) {
-    return next(req);
-  }
+  const token = authService.getToken();
+  const authReq = token
+    ? req.clone({ setHeaders: { Authorization: `Bearer ${token}` } })
+    : req;
 
-  return next(
-    req.clone({
-      setHeaders: { Authorization: `Bearer ${token}` },
+  return next(authReq).pipe(
+    catchError((error: HttpErrorResponse) => {
+      if (error.status === 401) {
+        if (token) {
+          toastr.error('פג תוקף ההתחברות, אנא התחבר מחדש');
+          authService.logout();
+          router.navigate(['/login']);
+        }
+      } else if (error.status === 403) {
+        toastr.error('אין לך הרשאה לבצע פעולה זו');
+      } else if (error.status === 0 || error.status >= 500) {
+        toastr.error('שגיאת שרת, אנא נסה מחדש מאוחר יותר');
+      }
+
+      return throwError(() => error);
     })
   );
 };

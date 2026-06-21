@@ -1,7 +1,0 @@
-{
-  "version": 3,
-  "sources": ["src/app/features/my-products/product-form/product-form.component.ts"],
-  "sourcesContent": ["import { Component } from '@angular/core';\r\n\r\n@Component({\r\n  selector: 'app-product-form',\r\n  standalone: true,\r\n  template: `<p>Product Form — Day 5 (Developer B)</p>`,\r\n})\r\nexport class ProductFormComponent {}\r\n"],
-  "mappings": ";;;;;;;;;;;AAOM,IAAO,uBAAP,MAAO,sBAAoB;;qCAApB,uBAAoB;EAAA;yEAApB,uBAAoB,WAAA,CAAA,CAAA,kBAAA,CAAA,GAAA,OAAA,GAAA,MAAA,GAAA,UAAA,SAAA,8BAAA,IAAA,KAAA;AAAA,QAAA,KAAA,GAAA;AAFpB,MAAA,4BAAA,GAAA,GAAA;AAAG,MAAA,iBAAA,GAAA,yCAAA;AAAkC,MAAA,0BAAA;;;;;sEAErC,sBAAoB,CAAA;UALhC;WAAU;MACT,UAAU;MACV,YAAY;MACZ,UAAU;KACX;;;;6EACY,sBAAoB,EAAA,WAAA,wBAAA,UAAA,uEAAA,YAAA,EAAA,CAAA;AAAA,GAAA;",
-  "names": []
-}
