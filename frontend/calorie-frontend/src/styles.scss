@@ -19,8 +19,19 @@ body {
   height: 100%;
 }
 
+html[dir='rtl'],
+html[dir='rtl'] body {
+  direction: rtl;
+}
+
 body {
   margin: 0;
   font-family: Roboto, 'Helvetica Neue', sans-serif;
   background-color: #fafafa;
+}
+
+/* ngx-toastr: align notifications to the visual start in RTL */
+html[dir='rtl'] #toast-container.toast-top-left {
+  right: 12px;
+  left: auto;
 }

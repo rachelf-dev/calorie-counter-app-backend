@@ -1,0 +1,93 @@
+.auth-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 24px 16px;
+  box-sizing: border-box;
+  background: linear-gradient(160deg, #e3f2fd 0%, #fafafa 45%, #fafafa 100%);
+}
+
+.auth-card {
+  width: 100%;
+  max-width: 440px;
+  overflow: hidden;
+}
+
+.auth-card mat-card-header {
+  display: block;
+  margin-bottom: 8px;
+  text-align: center;
+}
+
+.auth-card mat-card-title {
+  font-size: 1.5rem;
+  font-weight: 500;
+  margin-bottom: 4px;
+}
+
+.auth-card mat-card-subtitle {
+  font-size: 0.95rem;
+}
+
+.auth-card mat-card-content {
+  padding-top: 8px;
+}
+
+.auth-card form {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.ltr-input {
+  direction: ltr;
+  text-align: left;
+}
+
+.submit-btn {
+  margin-top: 12px;
+  height: 48px;
+  font-size: 1rem;
+}
+
+.auth-footer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: 8px 16px 16px;
+}
+
+/* Material handset breakpoint (≤599px) */
+@media (max-width: 599.98px) {
+  .auth-page {
+    align-items: flex-start;
+    padding: 16px 12px;
+    min-height: 100dvh;
+  }
+
+  .auth-card {
+    max-width: 100%;
+    margin-top: 8px;
+  }
+
+  .auth-card mat-card-title {
+    font-size: 1.35rem;
+  }
+
+  .submit-btn {
+    height: 44px;
+  }
+}
+
+/* Desktop */
+@media (min-width: 600px) {
+  .auth-card {
+    box-shadow: 0 8px 24px rgb(0 0 0 / 8%);
+  }
+}

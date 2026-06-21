@@ -534,6 +534,3 @@ API_URL=http://localhost:3000/api
 - **Custom Pipe** — `CalorieFormatPipe` (`shared/pipes/calorie-format.pipe.ts`)
 - **Custom Directive** — `CalorieWarningDirective` (`shared/directives/calorie-warning.directive.ts`)
 - **HTTP Interceptor** — `AppInterceptor` (JWT injection + Error handling עם toastr)
-
-
-
