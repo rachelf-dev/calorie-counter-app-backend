@@ -1,6 +1,6 @@
 import { Component, inject, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Router, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
 import { finalize } from 'rxjs';
 
@@ -34,6 +34,7 @@ export class LoginComponent {
   private readonly fb = inject(FormBuilder);
   private readonly authService = inject(AuthService);
   private readonly router = inject(Router);
+  private readonly route = inject(ActivatedRoute);
   private readonly toastr = inject(ToastrService);
 
   readonly loading = signal(false);
@@ -57,7 +58,11 @@ export class LoginComponent {
       .subscribe({
         next: (res) => {
           this.toastr.success(`ברוך הבא, ${res.user.name}`);
-          this.router.navigate(['/dashboard']);
+          const returnUrl = this.route.snapshot.queryParamMap.get('returnUrl') ?? 'dashboard';
+          const search = this.route.snapshot.queryParamMap.get('search');
+          this.router.navigate([`/${returnUrl}`], {
+            ...(search ? { queryParams: { search } } : {}),
+          });
         },
         error: (err: HttpErrorResponse) => {
           this.toastr.error(err.error?.message ?? 'אירעה שגיאה בהתחברות');

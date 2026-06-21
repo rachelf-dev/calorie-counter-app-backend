@@ -1,0 +1,135 @@
+@use '../../shared/styles/breakpoints' as bp;
+
+.dashboard-page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 24px 16px 32px;
+  box-sizing: border-box;
+}
+
+.dashboard-header {
+  margin-block-end: 24px;
+  text-align: center;
+}
+
+.dashboard-header h1 {
+  margin: 0 0 8px;
+  font-size: 1.75rem;
+  font-weight: 500;
+}
+
+.subtitle {
+  margin: 0;
+  color: rgb(0 0 0 / 60%);
+}
+
+.page-loading {
+  margin-block-end: 16px;
+}
+
+.error-banner {
+  margin: 0 0 16px;
+  padding: 12px 16px;
+  border-radius: 8px;
+  background: #ffebee;
+  color: #c62828;
+}
+
+.search-section {
+  margin-block-end: 20px;
+}
+
+.summary-section {
+  margin-block-end: 24px;
+}
+
+.summary-card mat-card-content {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 8px;
+  padding-block: 12px;
+  border-radius: 8px;
+  transition: background-color 0.2s ease;
+}
+
+.progress-card mat-card-content {
+  padding-block-start: 0;
+}
+
+.summary-label,
+.summary-goal {
+  color: rgb(0 0 0 / 60%);
+}
+
+.summary-value {
+  font-size: 1.25rem;
+  font-weight: 500;
+}
+
+.dashboard-grid {
+  display: grid;
+  gap: 20px;
+}
+
+.side-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.placeholder-card mat-card-content,
+.selected-product-card mat-card-content {
+  padding-block-start: 0;
+}
+
+.placeholder-text {
+  margin: 0;
+  color: rgb(0 0 0 / 45%);
+  font-style: italic;
+}
+
+.placeholder-meta {
+  margin: 8px 0 0;
+  color: rgb(0 0 0 / 60%);
+}
+
+.product-name {
+  margin: 0 0 4px;
+  font-size: 1.1rem;
+  font-weight: 500;
+}
+
+.product-meta {
+  margin: 0 0 12px;
+  color: rgb(0 0 0 / 60%);
+}
+
+.add-btn {
+  width: 100%;
+  margin-block-start: 12px;
+  height: 44px;
+}
+
+@include bp.tablet-up {
+  .dashboard-header {
+    text-align: start;
+  }
+
+  .dashboard-grid {
+    grid-template-columns: 1fr 1fr;
+    align-items: start;
+  }
+}
+
+@include bp.web-up {
+  .dashboard-grid {
+    grid-template-columns: minmax(0, 2fr) minmax(280px, 1fr);
+  }
+}
+
+@include bp.handset {
+  .dashboard-header h1 {
+    font-size: 1.5rem;
+  }
+}

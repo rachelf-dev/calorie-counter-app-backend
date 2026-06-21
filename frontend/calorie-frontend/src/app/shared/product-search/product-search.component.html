@@ -1,0 +1,43 @@
+<div class="product-search">
+  <mat-form-field appearance="outline" class="search-field">
+    <mat-label>חיפוש מוצר</mat-label>
+    <input
+      matInput
+      type="search"
+      [formControl]="searchControl"
+      [matAutocomplete]="auto"
+      placeholder="הקלידי שם מוצר, למשל: חומוס"
+      autocomplete="off"
+    />
+    <mat-icon matPrefix>search</mat-icon>
+
+    @if (loading()) {
+      <mat-spinner matSuffix diameter="20" />
+    }
+
+    <mat-autocomplete
+      #auto="matAutocomplete"
+      [displayWith]="displayProduct"
+      (optionSelected)="onProductSelected($event.option.value)"
+    >
+      @if (filteredProducts$ | async; as products) {
+        @for (product of products; track product._id) {
+          <mat-option [value]="product">
+            <span class="option-name">{{ product.name }}</span>
+            <span class="option-meta">
+              {{ product.caloriesPer100g | calorieFormat }} / 100 גרם
+            </span>
+          </mat-option>
+        }
+
+        @if (hasSearched() && !loading() && !searchError() && products.length === 0) {
+          <mat-option disabled>לא נמצאו מוצרים</mat-option>
+        }
+      }
+    </mat-autocomplete>
+  </mat-form-field>
+
+  @if (searchError(); as error) {
+    <p class="search-error" role="alert">{{ error }}</p>
+  }
+</div>

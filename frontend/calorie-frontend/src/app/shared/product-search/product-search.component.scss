@@ -1,0 +1,26 @@
+.product-search {
+  width: 100%;
+}
+
+.search-field {
+  width: 100%;
+}
+
+.option-name {
+  font-weight: 500;
+}
+
+.option-meta {
+  margin-inline-start: 8px;
+  font-size: 0.85rem;
+  color: rgb(0 0 0 / 54%);
+}
+
+.search-error {
+  margin: -8px 0 0;
+  padding: 8px 12px;
+  border-radius: 8px;
+  background: #fff3e0;
+  color: #e65100;
+  font-size: 0.9rem;
+}

@@ -1,0 +1,91 @@
+<div class="dashboard-page">
+  <header class="dashboard-header">
+    <h1>לוח בקרה יומי</h1>
+    <p class="subtitle">חפשי מוצר, הוסיפי לסל ועקבי אחרי הקלוריות שלך</p>
+  </header>
+
+  @if (loading$ | async) {
+    <mat-progress-bar mode="indeterminate" class="page-loading" />
+  }
+
+  @if (error$ | async; as error) {
+    <p class="error-banner" role="alert">{{ error }}</p>
+  }
+
+  <section class="search-section">
+    <app-product-search
+      [initialSearch]="initialSearch"
+      (searchChange)="onSearchChange($event)"
+      (productSelected)="onProductSelected($event)"
+    />
+  </section>
+
+  @if (todayLog$ | async; as log) {
+    <section class="summary-section" aria-label="סיכום יומי">
+      <mat-card
+        appearance="outlined"
+        class="summary-card"
+        [appCalorieWarning]="(log.totalCaloriesConsumed / log.targetCalories) * 100"
+      >
+        <mat-card-content>
+          <span class="summary-label">נצרכו היום:</span>
+          <span class="summary-value">{{ log.totalCaloriesConsumed | calorieFormat }}</span>
+          <span class="summary-separator">/</span>
+          <span class="summary-goal">יעד: {{ log.targetCalories | calorieFormat }}</span>
+        </mat-card-content>
+      </mat-card>
+    </section>
+  }
+
+  <div class="dashboard-grid">
+    <section class="basket-section" aria-label="סל יומי">
+      @if (todayLog$ | async; as log) {
+        <app-basket [items]="log.items" [loading]="(loading$ | async) ?? false" />
+      }
+    </section>
+
+    <aside class="side-panel">
+      @if (selectedProduct(); as product) {
+        <mat-card appearance="outlined" class="selected-product-card">
+          <mat-card-header>
+            <mat-card-title>מוצר נבחר</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <p class="product-name">{{ product.name }}</p>
+            <p class="product-meta">
+              {{ product.caloriesPer100g | calorieFormat }} / 100 גרם
+            </p>
+            <app-unit-selector
+              [product]="product"
+              (selectionChange)="onUnitSelectionChange($event)"
+            />
+            <button
+              mat-flat-button
+              color="primary"
+              type="button"
+              class="add-btn"
+              [disabled]="!unitSelection() || (loading$ | async)"
+              (click)="addToBasket()"
+            >
+              הוסף לסל
+            </button>
+          </mat-card-content>
+        </mat-card>
+      }
+
+      @if (todayLog$ | async; as log) {
+        <mat-card appearance="outlined" class="progress-card">
+          <mat-card-header>
+            <mat-card-title>התקדמות</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <app-progress-bar
+              [totalCalories]="log.totalCaloriesConsumed"
+              [goal]="log.targetCalories"
+            />
+          </mat-card-content>
+        </mat-card>
+      }
+    </aside>
+  </div>
+</div>

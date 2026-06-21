@@ -9,6 +9,7 @@ import { provideEffects } from '@ngrx/effects';
 import { provideToastr } from 'ngx-toastr';
 
 import { routes } from './app.routes';
+import { appInterceptor } from './core/interceptors/app.interceptor';
 import { logsReducer } from './store/logs/logs.reducer';
 import { LogsEffects } from './store/logs/logs.effects';
 
@@ -19,7 +20,7 @@ export const appConfig: ApplicationConfig = {
     provideZoneChangeDetection({ eventCoalescing: true }),
     { provide: LOCALE_ID, useValue: 'he-IL' },
     provideRouter(routes),
-    provideHttpClient(withInterceptors([])),
+    provideHttpClient(withInterceptors([appInterceptor])),
     provideAnimations(),
     provideStore({ logs: logsReducer }),
     provideEffects([LogsEffects]),

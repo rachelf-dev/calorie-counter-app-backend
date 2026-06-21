@@ -1,0 +1,61 @@
+.basket-card mat-card-header {
+  display: block;
+  margin-block-end: 4px;
+}
+
+.empty-basket {
+  margin: 0;
+  padding: 16px 0;
+  text-align: center;
+  color: rgb(0 0 0 / 54%);
+}
+
+.basket-list {
+  padding: 0;
+}
+
+.basket-item {
+  height: auto;
+  padding-block: 8px;
+}
+
+.item-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  width: 100%;
+  padding-block: 4px;
+}
+
+.item-main {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.item-name {
+  font-weight: 500;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.item-details {
+  font-size: 0.85rem;
+  color: rgb(0 0 0 / 54%);
+}
+
+.item-actions {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-shrink: 0;
+}
+
+.item-calories {
+  font-size: 0.9rem;
+  font-weight: 500;
+  white-space: nowrap;
+}

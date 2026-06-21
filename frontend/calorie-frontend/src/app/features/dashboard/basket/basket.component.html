@@ -1,0 +1,39 @@
+<mat-card appearance="outlined" class="basket-card">
+  <mat-card-header>
+    <mat-card-title>סל יומי</mat-card-title>
+    <mat-card-subtitle>{{ items.length }} פריטים</mat-card-subtitle>
+  </mat-card-header>
+
+  <mat-card-content>
+    @if (items.length === 0) {
+      <p class="empty-basket">הסל ריק — חפשי מוצר והוסיפי לסל</p>
+    } @else {
+      <mat-list class="basket-list" aria-label="פריטים בסל">
+        @for (item of items; track item._id) {
+          <mat-list-item class="basket-item">
+            <div class="item-content">
+              <div class="item-main">
+                <span class="item-name">{{ item.productName }}</span>
+                <span class="item-details">
+                  {{ item.quantity }} × {{ unitLabel(item.unit) }}
+                </span>
+              </div>
+              <div class="item-actions">
+                <span class="item-calories">{{ item.calories | calorieFormat }}</span>
+                <button
+                  mat-icon-button
+                  type="button"
+                  aria-label="הסר פריט"
+                  [disabled]="loading"
+                  (click)="confirmRemove(item)"
+                >
+                  <mat-icon>delete</mat-icon>
+                </button>
+              </div>
+            </div>
+          </mat-list-item>
+        }
+      </mat-list>
+    }
+  </mat-card-content>
+</mat-card>

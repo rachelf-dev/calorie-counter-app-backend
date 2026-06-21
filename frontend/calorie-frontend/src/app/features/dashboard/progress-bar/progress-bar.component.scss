@@ -1,0 +1,39 @@
+.progress-panel {
+  padding: 12px;
+  border-radius: 8px;
+  transition: background-color 0.2s ease;
+}
+
+.progress-label {
+  margin: 0 0 12px;
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+.progress-separator {
+  margin-inline: 6px;
+  font-weight: 400;
+  color: rgb(0 0 0 / 54%);
+}
+
+.progress-percent {
+  margin: 8px 0 0;
+  font-size: 0.9rem;
+  color: rgb(0 0 0 / 60%);
+  text-align: end;
+}
+
+.status-ok mat-progress-bar {
+  --mdc-linear-progress-active-indicator-color: #4caf50;
+  --mdc-linear-progress-track-color: #e8f5e9;
+}
+
+.status-warn mat-progress-bar {
+  --mdc-linear-progress-active-indicator-color: #ff9800;
+  --mdc-linear-progress-track-color: #fff3e0;
+}
+
+.status-over mat-progress-bar {
+  --mdc-linear-progress-active-indicator-color: #f44336;
+  --mdc-linear-progress-track-color: #ffebee;
+}

@@ -39,6 +39,27 @@ html[dir='rtl'] #toast-container.toast-top-left {
   inset-inline-start: auto;
 }
 
+/* CalorieWarningDirective — global warning states */
+.warning-orange {
+  background-color: #fff3e0;
+}
+
+.warning-red {
+  background-color: #ffebee;
+  animation: calorie-pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes calorie-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.82;
+  }
+}
+
 /* Material form fields: keep LTR inputs readable inside RTL layout */
 html[dir='rtl'] .ltr-input {
   direction: ltr;

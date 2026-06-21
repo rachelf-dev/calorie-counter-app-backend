@@ -1,0 +1,31 @@
+.unit-form {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.unit-field,
+.quantity-field {
+  width: 100%;
+}
+
+.calorie-preview {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin: 8px 0 0;
+  padding: 10px 12px;
+  border-radius: 8px;
+  background: #e3f2fd;
+}
+
+.preview-label {
+  color: rgb(0 0 0 / 60%);
+  font-size: 0.9rem;
+}
+
+.no-units {
+  margin: 0;
+  color: #c62828;
+  font-size: 0.9rem;
+}

@@ -67,7 +67,8 @@ productSchema.statics.findGlobalAndUserProducts = function (userId, search = '')
   }
 
   if (search && search.trim()) {
-    filter.name = { $regex: search.trim(), $options: 'i' };
+    const escaped = search.trim().replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    filter.name = { $regex: escaped, $options: 'i' };
   }
 
   return this.find(filter).sort({ name: 1 });

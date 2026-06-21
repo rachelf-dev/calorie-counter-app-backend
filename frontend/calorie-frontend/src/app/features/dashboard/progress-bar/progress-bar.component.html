@@ -1,0 +1,11 @@
+<div class="progress-panel" [class]="statusClass" [appCalorieWarning]="percentConsumed">
+  <p class="progress-label">
+    {{ totalCalories | calorieFormat }}
+    <span class="progress-separator">מתוך</span>
+    {{ goal | calorieFormat }}
+  </p>
+
+  <mat-progress-bar mode="determinate" [value]="barValue" />
+
+  <p class="progress-percent">{{ percentConsumed | number: '1.0-0' }}% מהיעד</p>
+</div>
