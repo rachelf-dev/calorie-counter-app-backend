@@ -11,6 +11,7 @@ import { provideToastr } from 'ngx-toastr';
 import { routes } from './app.routes';
 import { logsReducer } from './store/logs/logs.reducer';
 import { LogsEffects } from './store/logs/logs.effects';
+import { appInterceptor } from './core/interceptors/app.interceptor';
 
 registerLocaleData(localeHe);
 
@@ -19,7 +20,7 @@ export const appConfig: ApplicationConfig = {
     provideZoneChangeDetection({ eventCoalescing: true }),
     { provide: LOCALE_ID, useValue: 'he-IL' },
     provideRouter(routes),
-    provideHttpClient(withInterceptors([])),
+    provideHttpClient(withInterceptors([appInterceptor])),
     provideAnimations(),
     provideStore({ logs: logsReducer }),
     provideEffects([LogsEffects]),

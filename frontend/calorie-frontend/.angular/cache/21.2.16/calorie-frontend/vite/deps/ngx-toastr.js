@@ -10,10 +10,10 @@ import {
   DomSanitizer
 } from "./chunk-CKEMVHVO.js";
 import "./chunk-ZKTDNF6H.js";
-import "./chunk-CVEH2A25.js";
 import {
   NgIf
 } from "./chunk-YGO37SZP.js";
+import "./chunk-CVEH2A25.js";
 import "./chunk-SCH5VNI4.js";
 import {
   ANIMATION_MODULE_TYPE,

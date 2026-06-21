@@ -6,14 +6,14 @@ import {
 } from "./chunk-CKEMVHVO.js";
 import "./chunk-ZKTDNF6H.js";
 import "./chunk-FB5ZOWN4.js";
-import {
-  BidiModule
-} from "./chunk-H5QI2WBR.js";
+import "./chunk-YGO37SZP.js";
 import {
   HttpClient
 } from "./chunk-CVEH2A25.js";
-import "./chunk-YGO37SZP.js";
 import "./chunk-SCH5VNI4.js";
+import {
+  BidiModule
+} from "./chunk-H5QI2WBR.js";
 import {
   ChangeDetectionStrategy,
   Component,

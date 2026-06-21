@@ -1,0 +1,1 @@
+import{Fb as n,Gb as i,bc as s,mb as o}from"./chunk-HFRIHTA3.js";var r=class t{static \u0275fac=function(e){return new(e||t)};static \u0275cmp=o({type:t,selectors:[["app-history"]],decls:2,vars:0,template:function(e,p){e&1&&(n(0,"p"),s(1,"History \u2014 Day 5 (Developer B)"),i())},encapsulation:2})};export{r as HistoryComponent};
