@@ -534,3 +534,93 @@ API_URL=http://localhost:3000/api
 - **Custom Pipe** — `CalorieFormatPipe` (`shared/pipes/calorie-format.pipe.ts`)
 - **Custom Directive** — `CalorieWarningDirective` (`shared/directives/calorie-warning.directive.ts`)
 - **HTTP Interceptor** — `AppInterceptor` (JWT injection + Error handling עם toastr)
+
+---
+
+## קו עיצוב (Design System)
+
+> **מקור אמת יחיד לעיצוב.** כל קומפוננטה, סגנון או רכיב UI חדש חייב להתיישר לפי הסעיף הזה. הקו: נקי, חלק ועדין — ירוק ליים כצבע הדגשה על רקע לבן נקי, עם טקסט שחור רך.
+
+### עקרונות ליבה
+- **מצב בהיר בלבד** — אין dark mode.
+- **רך ומעוגל (soft-rounded)** — פינות מעוגלות, צללים עדינים, הרבה מרווח לבן (airy), מעברים חלקים.
+- **הליים הוא הדגשה בלבד** — לעולם לא כרקע של אזורים גדולים. רק ל-CTA, אייקונים, מצב active, קו יעד, קישורים והדגשות.
+- **RTL** — כיוון `dir="rtl"` עקבי בכל הקומפוננטות.
+
+### פלטת צבעים (Design Tokens)
+| תפקיד | ערך HEX |
+|------|---------|
+| Accent ראשי (ליים) | `#7AC70C` |
+| Accent — hover | `#6BB00A` |
+| Accent — active עמוק | `#5C9A09` |
+| Tint רקע רך | `#F2FAE5` |
+| Tint בהיר מאוד | `#FAFDF4` |
+| משטח (cards/inputs) | `#FFFFFF` |
+| רקע עמוד | `#FAFBF8` |
+| טקסט ראשי (שחור רך) | `#1A1D1A` |
+| טקסט משני | `#5A625A` |
+| טקסט מעומעם | `#8A928A` |
+| גבולות / מפרידים | `#EAEDE7` |
+| סטטוס — הצלחה/תקין | `#7AC70C` |
+| סטטוס — אזהרה (100–120%) | `#F5A623` |
+| סטטוס — חריגה (>120%) | `#E5484D` |
+
+מומלץ להגדיר את כל הערכים כ-CSS custom properties בשורש (`:root`), למשל:
+```scss
+:root {
+  --accent: #7AC70C;
+  --accent-hover: #6BB00A;
+  --accent-active: #5C9A09;
+  --tint-soft: #F2FAE5;
+  --tint-faint: #FAFDF4;
+  --surface: #FFFFFF;
+  --bg: #FAFBF8;
+  --text: #1A1D1A;
+  --text-secondary: #5A625A;
+  --text-muted: #8A928A;
+  --border: #EAEDE7;
+  --status-warning: #F5A623;
+  --status-danger: #E5484D;
+}
+```
+
+### טיפוגרפיה
+- פונט ראשי: **`Heebo`** מ-Google Fonts, משקלים `400 / 500 / 700`, fallback ל-`system-ui, sans-serif`.
+- ייבוא ב-`styles.scss` או ב-`index.html`, והגדרת `font-family: 'Heebo', system-ui, sans-serif` על `body`.
+
+### צורה, מרווח וצללים
+- **Radius**: בסיס `12px` · קטן `8px` · כפתורים `10px` · pill לתגיות `999px`.
+- **Spacing scale** (מבוסס 8px): `4 / 8 / 12 / 16 / 24 / 32`.
+- **צללים רכים**: כרטיס `0 2px 8px rgba(26,29,26,0.06)` · מוגבה `0 6px 20px rgba(26,29,26,0.08)`.
+- **מעברים**: `transition: 0.2s ease` על hover/focus.
+
+### הנחיות שימוש (כללים מחייבים לקוד עתידי)
+- **כפתור ראשי**: רקע ליים `#7AC70C` + טקסט לבן; ב-hover `#6BB00A`. radius `10px`.
+- **כפתור משני**: רקע לבן + מתאר ליים `#7AC70C` + טקסט כהה `#1A1D1A`.
+- **כרטיסים**: רקע לבן, פינות `12px`, וגבול דק `#EAEDE7` **או** צל רך — לא שניהם יחד.
+- **שדות טופס**: רקע לבן, גבול `#EAEDE7`; ב-focus גבול ליים `#7AC70C`.
+- **ProgressBar** (תואם הסמנטיקה הקיימת): ירוק ליים `< 100%` · כתום `100–120%` · אדום `> 120%`.
+- **נגישות**: טקסט תמיד `#1A1D1A` על רקע בהיר. אין להשתמש בליים על לבן לטקסט קטן (ניגודיות נמוכה).
+
+### התאמת Angular Material
+- להגדיר theme בהיר מותאם עם הליים כ-**primary palette**, רקע עמוד `#FAFBF8` ומשטחים לבנים, ו-`$direction: rtl`.
+- כל קומפוננטות Material (`mat-button`, `mat-card`, `mat-form-field`, `mat-toolbar`) יורשות את ה-radius, הצבעים והטיפוגרפיה דרך משתני ה-SCSS/CSS הגלובליים — אין להגדיר צבעים מקומיים שסותרים את הטוקנים.
+- דוגמת בסיס ל-`styles.scss`:
+```scss
+@use '@angular/material' as mat;
+
+$calorie-primary: mat.define-palette((
+  50: #F2FAE5, 100: #E3F4C9, 500: #7AC70C,
+  600: #6BB00A, 700: #5C9A09,
+  contrast: (500: #FFFFFF, 600: #FFFFFF, 700: #FFFFFF)
+));
+
+$calorie-theme: mat.define-light-theme((
+  color: (primary: $calorie-primary, accent: $calorie-primary),
+  typography: mat.define-typography-config($font-family: 'Heebo, system-ui, sans-serif'),
+  density: 0
+));
+
+html { @include mat.all-component-themes($calorie-theme); direction: rtl; }
+```
+

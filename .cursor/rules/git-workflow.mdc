@@ -1,0 +1,18 @@
+---
+description: Git workflow for Yael — always work on yael-dev, push to origin (personal fork)
+alwaysApply: true
+---
+
+# Git Workflow — Yael
+
+When handling any Git request in this project, follow `.cursor/skills/git-agent/SKILL.md`.
+
+## Quick Reference
+
+- **Branch**: `yael-dev` (never `main` or `rachel-dev` for daily work)
+- **Push target**: `git push origin yael-dev`
+- **origin** = `yael88761-svg/calorie-counter-app-backend` (Yael's fork)
+- **upstream** = `rachelf-dev/calorie-counter-app-backend` (team repo — fetch/merge only)
+- **Teammate**: Rachel on `rachel-dev`; merge to `main` together via PR
+- **Never commit**: `node_modules/`, `.env`, secrets
+- **Commit only when user explicitly asks**
