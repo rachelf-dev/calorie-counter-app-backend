@@ -5,6 +5,10 @@ import { RouterOutlet } from '@angular/router';
   selector: 'app-root',
   standalone: true,
   imports: [RouterOutlet],
+  host: {
+    dir: 'rtl',
+    lang: 'he',
+  },
   template: `<router-outlet />`,
   styles: `:host { display: block; min-height: 100vh; }`,
 })

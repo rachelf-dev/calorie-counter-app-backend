@@ -1,8 +1,11 @@
+@use '../../shared/styles/breakpoints' as bp;
+
 .auth-page {
   display: flex;
   justify-content: center;
   align-items: center;
   min-height: 100vh;
+  min-height: 100dvh;
   padding: 24px 16px;
   box-sizing: border-box;
   background: linear-gradient(160deg, #e3f2fd 0%, #fafafa 45%, #fafafa 100%);
@@ -16,14 +19,14 @@
 
 .auth-card mat-card-header {
   display: block;
-  margin-bottom: 8px;
+  margin-block-end: 8px;
   text-align: center;
 }
 
 .auth-card mat-card-title {
   font-size: 1.5rem;
   font-weight: 500;
-  margin-bottom: 4px;
+  margin-block-end: 4px;
 }
 
 .auth-card mat-card-subtitle {
@@ -31,7 +34,7 @@
 }
 
 .auth-card mat-card-content {
-  padding-top: 8px;
+  padding-block-start: 8px;
 }
 
 .auth-card form {
@@ -46,11 +49,11 @@
 
 .ltr-input {
   direction: ltr;
-  text-align: left;
+  text-align: start;
 }
 
 .submit-btn {
-  margin-top: 12px;
+  margin-block-start: 12px;
   height: 48px;
   font-size: 1rem;
 }
@@ -63,17 +66,15 @@
   padding: 8px 16px 16px;
 }
 
-/* Material handset breakpoint (≤599px) */
-@media (max-width: 599.98px) {
+@include bp.handset {
   .auth-page {
     align-items: flex-start;
     padding: 16px 12px;
-    min-height: 100dvh;
   }
 
   .auth-card {
     max-width: 100%;
-    margin-top: 8px;
+    margin-block-start: 8px;
   }
 
   .auth-card mat-card-title {
@@ -85,8 +86,7 @@
   }
 }
 
-/* Desktop */
-@media (min-width: 600px) {
+@include bp.tablet-up {
   .auth-card {
     box-shadow: 0 8px 24px rgb(0 0 0 / 8%);
   }

@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["src/app/features/profile/profile.component.ts"],
+  "sourcesContent": ["import { Component } from '@angular/core';\r\n\r\n@Component({\r\n  selector: 'app-profile',\r\n  standalone: true,\r\n  template: `<p>Profile — Day 5 (Developer A)</p>`,\r\n})\r\nexport class ProfileComponent {}\r\n"],
+  "mappings": ";;;;;;;;;;;AAOM,IAAO,mBAAP,MAAO,kBAAgB;;qCAAhB,mBAAgB;EAAA;yEAAhB,mBAAgB,WAAA,CAAA,CAAA,aAAA,CAAA,GAAA,OAAA,GAAA,MAAA,GAAA,UAAA,SAAA,0BAAA,IAAA,KAAA;AAAA,QAAA,KAAA,GAAA;AAFhB,MAAA,4BAAA,GAAA,GAAA;AAAG,MAAA,iBAAA,GAAA,oCAAA;AAA6B,MAAA,0BAAA;;;;;sEAEhC,kBAAgB,CAAA;UAL5B;WAAU;MACT,UAAU;MACV,YAAY;MACZ,UAAU;KACX;;;;6EACY,kBAAgB,EAAA,WAAA,oBAAA,UAAA,iDAAA,YAAA,EAAA,CAAA;AAAA,GAAA;",
+  "names": []
+}

@@ -1,0 +1,22 @@
+// Angular CDK Layout breakpoints — shared across the app per .cursorrules
+$handset-max: 599.98px;
+$tablet-min: 600px;
+$web-min: 960px;
+
+@mixin handset {
+  @media (max-width: $handset-max) {
+    @content;
+  }
+}
+
+@mixin tablet-up {
+  @media (min-width: $tablet-min) {
+    @content;
+  }
+}
+
+@mixin web-up {
+  @media (min-width: $web-min) {
+    @content;
+  }
+}

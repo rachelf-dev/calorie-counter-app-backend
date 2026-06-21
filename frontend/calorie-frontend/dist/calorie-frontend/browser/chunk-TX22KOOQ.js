@@ -1,1 +1,0 @@
-import{Va as o,fb as t,gb as n,pb as s}from"./chunk-4WKG7KAP.js";var r=class a{static \u0275fac=function(e){return new(e||a)};static \u0275cmp=o({type:a,selectors:[["app-dashboard"]],decls:2,vars:0,template:function(e,m){e&1&&(t(0,"p"),s(1,"Dashboard \u2014 Day 4 (Developer B)"),n())},encapsulation:2})};export{r as DashboardComponent};
