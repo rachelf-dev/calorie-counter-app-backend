@@ -25,6 +25,13 @@ router.use(auth);
 router.get('/', productController.getProducts);
 router.get('/my', productController.getMyProducts);
 router.post('/', createProductValidators, validate, productController.createProduct);
+router.put(
+  '/:id',
+  param('id').isMongoId().withMessage('Invalid product id'),
+  createProductValidators,
+  validate,
+  productController.updateProduct
+);
 router.delete(
   '/:id',
   param('id').isMongoId().withMessage('Invalid product id'),

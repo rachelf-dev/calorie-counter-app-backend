@@ -42,6 +42,36 @@ async function createProduct(req, res, next) {
   }
 }
 
+async function updateProduct(req, res, next) {
+  try {
+    const product = await Product.findById(req.params.id);
+
+    if (!product) {
+      return res.status(404).json({ message: 'Product not found' });
+    }
+
+    const isOwner = product.createdBy?.toString() === req.user.id;
+    const isAdmin = req.user.role === 'admin';
+
+    if (!isAdmin && !isOwner) {
+      return res.status(403).json({ message: 'You can only update your own products' });
+    }
+
+    const { name, caloriesPer100g, servingSizes, imageUrl } = req.body;
+
+    product.name = name;
+    product.caloriesPer100g = caloriesPer100g;
+    product.servingSizes = servingSizes;
+    product.imageUrl = imageUrl || undefined;
+
+    await product.save();
+
+    res.json(product);
+  } catch (error) {
+    next(error);
+  }
+}
+
 async function deleteProduct(req, res, next) {
   try {
     const product = await Product.findById(req.params.id);
@@ -69,5 +99,6 @@ module.exports = {
   getProducts,
   getMyProducts,
   createProduct,
+  updateProduct,
   deleteProduct,
 };

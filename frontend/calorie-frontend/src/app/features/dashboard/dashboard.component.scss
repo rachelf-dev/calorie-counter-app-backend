@@ -43,6 +43,22 @@
   margin-block-end: 24px;
 }
 
+.chart-section {
+  margin-block-end: 24px;
+}
+
+.page-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  justify-content: center;
+  margin-block-start: 12px;
+}
+
+.page-nav a mat-icon {
+  margin-inline-end: 4px;
+}
+
 .summary-card mat-card-content {
   display: flex;
   flex-wrap: wrap;
@@ -114,6 +130,10 @@
 @include bp.tablet-up {
   .dashboard-header {
     text-align: start;
+  }
+
+  .page-nav {
+    justify-content: flex-start;
   }
 
   .dashboard-grid {

@@ -1,0 +1,160 @@
+@use '../../shared/styles/breakpoints' as bp;
+
+.my-products-page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 24px 16px 32px;
+  box-sizing: border-box;
+}
+
+.page-header {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 16px;
+  margin-block-end: 24px;
+}
+
+.header-text {
+  text-align: center;
+}
+
+.page-header h1 {
+  margin: 0 0 8px;
+  font-size: 1.75rem;
+  font-weight: 500;
+}
+
+.subtitle {
+  margin: 0;
+  color: rgb(0 0 0 / 60%);
+}
+
+.page-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  justify-content: center;
+  margin-block-start: 12px;
+}
+
+.page-nav a mat-icon {
+  margin-inline-end: 4px;
+}
+
+.add-btn {
+  align-self: center;
+  height: 44px;
+}
+
+.add-btn mat-icon {
+  margin-inline-end: 4px;
+}
+
+.page-loading {
+  margin-block-end: 16px;
+}
+
+.error-banner {
+  margin: 0 0 16px;
+  padding: 12px 16px;
+  border-radius: 8px;
+  background: #ffebee;
+  color: #c62828;
+}
+
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 48px 16px;
+  text-align: center;
+  color: rgb(0 0 0 / 55%);
+}
+
+.empty-icon {
+  width: 48px;
+  height: 48px;
+  font-size: 48px;
+  color: rgb(0 0 0 / 30%);
+}
+
+.products-grid {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.product-card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.product-card mat-card-content {
+  flex: 1;
+}
+
+.card-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 4px;
+  padding-inline: 8px 12px;
+}
+
+.add-basket-btn mat-icon {
+  margin-inline-end: 4px;
+}
+
+.product-image {
+  object-fit: cover;
+  max-height: 140px;
+}
+
+.calories {
+  margin: 0 0 8px;
+  font-weight: 500;
+}
+
+.serving-sizes {
+  margin: 0;
+  font-size: 0.875rem;
+  color: rgb(0 0 0 / 60%);
+  line-height: 1.4;
+}
+
+@include bp.tablet-up {
+  .page-header {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .header-text {
+    text-align: start;
+  }
+
+  .page-nav {
+    justify-content: flex-start;
+  }
+
+  .add-btn {
+    align-self: auto;
+    flex-shrink: 0;
+  }
+}
+
+@include bp.web-up {
+  .products-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+@include bp.handset {
+  .page-header h1 {
+    font-size: 1.5rem;
+  }
+}

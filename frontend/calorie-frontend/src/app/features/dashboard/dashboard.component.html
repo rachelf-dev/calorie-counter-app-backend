@@ -2,6 +2,16 @@
   <header class="dashboard-header">
     <h1>לוח בקרה יומי</h1>
     <p class="subtitle">חפשי מוצר, הוסיפי לסל ועקבי אחרי הקלוריות שלך</p>
+    <nav class="page-nav" aria-label="ניווט מהיר">
+      <a mat-button routerLink="/my-products">
+        <mat-icon>inventory_2</mat-icon>
+        המוצרים שלי
+      </a>
+      <a mat-button routerLink="/products">
+        <mat-icon>storefront</mat-icon>
+        מוצרים כלליים
+      </a>
+    </nav>
   </header>
 
   @if (loading$ | async) {
@@ -36,6 +46,10 @@
       </mat-card>
     </section>
   }
+
+  <section class="chart-section" aria-label="גרף שבועי">
+    <app-weekly-chart />
+  </section>
 
   <div class="dashboard-grid">
     <section class="basket-section" aria-label="סל יומי">

@@ -1,0 +1,66 @@
+@use '../../../shared/styles/breakpoints' as bp;
+
+.product-form-page {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 24px 16px 32px;
+  box-sizing: border-box;
+}
+
+.form-card mat-card-header {
+  display: block;
+  margin-block-end: 8px;
+}
+
+.form-card mat-card-content {
+  padding-block-start: 0;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.ltr-input {
+  direction: ltr;
+  text-align: start;
+}
+
+.serving-section {
+  margin-block-start: 16px;
+  padding-block-start: 16px;
+  border-top: 1px solid rgb(0 0 0 / 12%);
+}
+
+.section-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-block-end: 12px;
+}
+
+.section-header h2 {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+.serving-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr auto;
+  gap: 8px;
+  align-items: start;
+  margin-block-end: 8px;
+}
+
+.form-actions {
+  padding: 16px 0 0;
+  gap: 8px;
+}
+
+@include bp.handset {
+  .serving-row {
+    grid-template-columns: 1fr;
+  }
+}

@@ -1,13 +1,14 @@
 import { AsyncPipe } from '@angular/common';
 import { Component, DestroyRef, inject, OnInit, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { ToastrService } from 'ngx-toastr';
 
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
+import { MatIconModule } from '@angular/material/icon';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 
 import { Product } from '../../core/models/api.models';
@@ -18,6 +19,7 @@ import { BasketComponent } from './basket/basket.component';
 import { ProgressBarComponent } from './progress-bar/progress-bar.component';
 import { CalorieFormatPipe } from '../../shared/pipes/calorie-format.pipe';
 import { CalorieWarningDirective } from '../../shared/directives/calorie-warning.directive';
+import { WeeklyChartComponent } from '../../shared/weekly-chart/weekly-chart.component';
 import { LogsActions } from '../../store/logs/logs.actions';
 import {
   selectLogsError,
@@ -30,8 +32,10 @@ import {
   standalone: true,
   imports: [
     AsyncPipe,
+    RouterLink,
     MatButtonModule,
     MatCardModule,
+    MatIconModule,
     MatProgressBarModule,
     ProductSearchComponent,
     UnitSelectorComponent,
@@ -39,6 +43,7 @@ import {
     ProgressBarComponent,
     CalorieFormatPipe,
     CalorieWarningDirective,
+    WeeklyChartComponent,
   ],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss',

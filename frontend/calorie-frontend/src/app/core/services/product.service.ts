@@ -23,6 +23,10 @@ export class ProductService {
     return this.http.post<Product>(this.baseUrl, product);
   }
 
+  updateProduct(id: string, product: Omit<Product, '_id' | 'createdBy'>): Observable<Product> {
+    return this.http.put<Product>(`${this.baseUrl}/${id}`, product);
+  }
+
   deleteProduct(id: string): Observable<{ message: string }> {
     return this.http.delete<{ message: string }>(`${this.baseUrl}/${id}`);
   }

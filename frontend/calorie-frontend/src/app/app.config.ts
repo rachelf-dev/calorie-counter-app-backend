@@ -7,6 +7,7 @@ import { provideAnimations } from '@angular/platform-browser/animations';
 import { provideStore } from '@ngrx/store';
 import { provideEffects } from '@ngrx/effects';
 import { provideToastr } from 'ngx-toastr';
+import { provideCharts, withDefaultRegisterables } from 'ng2-charts';
 
 import { routes } from './app.routes';
 import { appInterceptor } from './core/interceptors/app.interceptor';
@@ -22,6 +23,7 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes),
     provideHttpClient(withInterceptors([appInterceptor])),
     provideAnimations(),
+    provideCharts(withDefaultRegisterables()),
     provideStore({ logs: logsReducer }),
     provideEffects([LogsEffects]),
     provideToastr({

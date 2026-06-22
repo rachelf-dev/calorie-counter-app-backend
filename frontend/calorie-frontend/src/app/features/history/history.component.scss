@@ -1,0 +1,111 @@
+@use '../../shared/styles/breakpoints' as bp;
+
+.history-page {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 24px 16px 32px;
+  box-sizing: border-box;
+}
+
+.history-header {
+  margin-block-end: 24px;
+  text-align: center;
+}
+
+.history-header h1 {
+  margin: 0 0 8px;
+  font-size: 1.75rem;
+  font-weight: 500;
+}
+
+.subtitle {
+  margin: 0;
+  color: rgb(0 0 0 / 60%);
+}
+
+.page-loading {
+  margin-block-end: 16px;
+}
+
+.error-banner {
+  margin: 0 0 16px;
+  padding: 12px 16px;
+  border-radius: 8px;
+  background: #ffebee;
+  color: #c62828;
+}
+
+.chart-section {
+  margin-block-end: 28px;
+}
+
+.chart-card mat-card-content {
+  padding-block-start: 0;
+}
+
+.chart-container {
+  position: relative;
+  height: 320px;
+}
+
+.chart-empty,
+.empty-state {
+  margin: 0;
+  padding: 32px 16px;
+  text-align: center;
+  color: rgb(0 0 0 / 45%);
+  font-style: italic;
+}
+
+.section-title {
+  margin: 0 0 12px;
+  font-size: 1.125rem;
+  font-weight: 500;
+}
+
+.table-section {
+  margin-block-start: 8px;
+}
+
+.table-wrapper {
+  overflow-x: auto;
+  border-radius: 8px;
+  border: 1px solid rgb(0 0 0 / 12%);
+}
+
+.history-table {
+  width: 100%;
+}
+
+.goal-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.875rem;
+}
+
+.goal-badge mat-icon {
+  width: 18px;
+  height: 18px;
+  font-size: 18px;
+}
+
+.goal-met {
+  color: #2e7d32;
+}
+
+.goal-missed {
+  color: #c62828;
+}
+
+@include bp.tablet-up {
+  .history-header {
+    text-align: start;
+  }
+}
+
+@include bp.handset {
+  .history-header h1 {
+    font-size: 1.5rem;
+  }
+}

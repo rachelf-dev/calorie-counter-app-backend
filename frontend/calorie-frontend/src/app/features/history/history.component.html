@@ -1,0 +1,68 @@
+<div class="history-page">
+  <header class="history-header">
+    <h1>היסטוריית קלוריות</h1>
+    <p class="subtitle">טבלה מלאה של כל הימים שתיעדת</p>
+  </header>
+
+  @if (loading()) {
+    <mat-progress-bar mode="indeterminate" class="page-loading" />
+  }
+
+  @if (error(); as err) {
+    <p class="error-banner" role="alert">{{ err }}</p>
+  }
+
+  @if (!loading() && !error()) {
+    <section class="chart-section" aria-label="גרף שבועי">
+      <app-weekly-chart [autoLoad]="false" [logs]="logs()" />
+    </section>
+  }
+
+  @if (!loading() && !error() && logs().length === 0) {
+    <p class="empty-state">אין עדיין היסטוריה. התחילי להוסיף מוצרים בלוח הבקרה.</p>
+  }
+
+  @if (logs().length > 0) {
+    <section class="table-section" aria-label="טבלת היסטוריה">
+      <h2 class="section-title">טבלת ימים</h2>
+      <div class="table-wrapper">
+        <table mat-table [dataSource]="logs()" class="history-table">
+          <ng-container matColumnDef="date">
+            <th mat-header-cell *matHeaderCellDef>תאריך</th>
+            <td mat-cell *matCellDef="let log">{{ log.date | date: 'dd/MM/yyyy' : 'UTC' }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="consumed">
+            <th mat-header-cell *matHeaderCellDef>נצרך</th>
+            <td mat-cell *matCellDef="let log">{{ log.totalCaloriesConsumed | calorieFormat }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="target">
+            <th mat-header-cell *matHeaderCellDef>יעד</th>
+            <td mat-cell *matCellDef="let log">{{ log.targetCalories | calorieFormat }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="goalMet">
+            <th mat-header-cell *matHeaderCellDef>עמידה ביעד</th>
+            <td mat-cell *matCellDef="let log">
+              @if (log.goalMet) {
+                <span class="goal-badge goal-met">
+                  <mat-icon aria-hidden="true">check_circle</mat-icon>
+                  כן
+                </span>
+              } @else {
+                <span class="goal-badge goal-missed">
+                  <mat-icon aria-hidden="true">cancel</mat-icon>
+                  לא
+                </span>
+              }
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+        </table>
+      </div>
+    </section>
+  }
+</div>

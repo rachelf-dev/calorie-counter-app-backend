@@ -1,0 +1,80 @@
+<div class="catalog-page">
+  <header class="page-header">
+    <div class="header-text">
+      <h1>מוצרים כלליים</h1>
+      <p class="subtitle">
+        מאגר המוצרים הגלובלי — {{ products().length }} מוצרים
+      </p>
+      <nav class="page-nav" aria-label="ניווט">
+        <a mat-button routerLink="/dashboard">
+          <mat-icon>home</mat-icon>
+          לוח הבקרה
+        </a>
+        <a mat-button routerLink="/my-products">
+          <mat-icon>inventory_2</mat-icon>
+          המוצרים שלי
+        </a>
+      </nav>
+    </div>
+  </header>
+
+  <section class="search-section" aria-label="חיפוש מוצרים">
+    <mat-form-field appearance="outline" class="search-field">
+      <mat-label>חיפוש במוצרים הכלליים</mat-label>
+      <input matInput [formControl]="searchControl" autocomplete="off" />
+      <mat-icon matPrefix>search</mat-icon>
+    </mat-form-field>
+  </section>
+
+  @if (loading()) {
+    <mat-progress-bar mode="indeterminate" class="page-loading" />
+  }
+
+  @if (error(); as err) {
+    <p class="error-banner" role="alert">{{ err }}</p>
+  }
+
+  @if (!loading() && !error() && products().length === 0) {
+    <div class="empty-state">
+      <mat-icon class="empty-icon" aria-hidden="true">search_off</mat-icon>
+      <p>לא נמצאו מוצרים כלליים לחיפוש זה.</p>
+    </div>
+  }
+
+  @if (products().length > 0) {
+    <div class="products-grid">
+      @for (product of products(); track product._id) {
+        <mat-card appearance="outlined" class="product-card">
+          @if (product.imageUrl) {
+            <img
+              mat-card-image
+              [src]="product.imageUrl"
+              [alt]="product.name"
+              class="product-image"
+              loading="lazy"
+            />
+          }
+          <mat-card-header>
+            <mat-card-title>{{ product.name }}</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <p class="calories">{{ product.caloriesPer100g | calorieFormat }} / 100 גרם</p>
+            <p class="serving-sizes">{{ servingSizesSummary(product) }}</p>
+          </mat-card-content>
+          <mat-card-actions align="end" class="card-actions">
+            <button
+              mat-stroked-button
+              color="primary"
+              type="button"
+              [disabled]="!product.servingSizes.length"
+              (click)="addToBasket(product)"
+            >
+              <mat-icon>add_shopping_cart</mat-icon>
+              הוסף לסל
+            </button>
+          </mat-card-actions>
+        </mat-card>
+      }
+    </div>
+  }
+</div>
