@@ -12,6 +12,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 
 import { ProductService } from '../../core/services/product.service';
+import { AuthService } from '../../core/services/auth.service';
 import { AddToBasketDialogService } from '../../shared/add-to-basket-dialog/add-to-basket-dialog.service';
 import { CalorieFormatPipe } from '../../shared/pipes/calorie-format.pipe';
 import { formatUnitLabel } from '../../shared/unit-selector/unit-selector.component';
@@ -36,6 +37,7 @@ import { Product } from '../../core/models/api.models';
 })
 export class AllProductsComponent implements OnInit {
   private readonly productService = inject(ProductService);
+  protected readonly authService = inject(AuthService);
   private readonly addToBasketDialog = inject(AddToBasketDialogService);
   private readonly destroyRef = inject(DestroyRef);
 

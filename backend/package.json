@@ -8,6 +8,7 @@
     "dev": "nodemon index.js",
     "seed": "node scripts/seed.js",
     "seed:admin": "node scripts/seed-admin.js",
+    "email:weekly": "node scripts/run-weekly-email.js",
     "test": "echo \"No backend tests configured yet\" && exit 0"
   },
   "keywords": [],

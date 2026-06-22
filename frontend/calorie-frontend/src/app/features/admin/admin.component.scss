@@ -1,0 +1,222 @@
+@use '../../shared/styles/breakpoints' as bp;
+
+.admin-page {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 24px 16px 32px;
+  box-sizing: border-box;
+}
+
+.page-header {
+  margin-block-end: 24px;
+}
+
+.header-text {
+  text-align: center;
+}
+
+.page-header h1 {
+  margin: 0 0 8px;
+  font-size: 1.75rem;
+  font-weight: 500;
+}
+
+.subtitle {
+  margin: 0;
+  color: rgb(0 0 0 / 60%);
+}
+
+.page-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  justify-content: center;
+  margin-block-start: 12px;
+}
+
+.page-nav a mat-icon {
+  margin-inline-end: 4px;
+}
+
+.admin-tabs {
+  margin-block-start: 8px;
+}
+
+.tab-icon {
+  margin-inline-end: 6px;
+  vertical-align: middle;
+}
+
+.tab-panel {
+  padding: 20px 0 8px;
+}
+
+.panel-toolbar {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-block-end: 16px;
+}
+
+.toolbar-start {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.toolbar-start button mat-icon {
+  margin-inline-end: 4px;
+}
+
+.panel-hint {
+  margin: 0;
+  font-size: 0.875rem;
+  color: rgb(0 0 0 / 55%);
+}
+
+.search-field {
+  width: 100%;
+  max-width: 360px;
+}
+
+.panel-loading {
+  margin-block-end: 16px;
+}
+
+.error-banner {
+  margin: 0 0 16px;
+  padding: 12px 16px;
+  border-radius: 8px;
+  background: #ffebee;
+  color: #c62828;
+}
+
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  margin: 0;
+  padding: 32px 16px;
+  text-align: center;
+  color: rgb(0 0 0 / 45%);
+}
+
+.empty-state p {
+  margin: 0;
+  font-style: italic;
+}
+
+.empty-state button mat-icon {
+  margin-inline-end: 4px;
+}
+
+.table-wrapper {
+  overflow-x: auto;
+  border-radius: 8px;
+  border: 1px solid rgb(0 0 0 / 12%);
+}
+
+.admin-table {
+  width: 100%;
+}
+
+.serving-cell {
+  max-width: 280px;
+  font-size: 0.875rem;
+  line-height: 1.4;
+  color: rgb(0 0 0 / 65%);
+}
+
+.results-count {
+  margin: 12px 0 0;
+  font-size: 0.875rem;
+  color: rgb(0 0 0 / 50%);
+  text-align: end;
+}
+
+.email-cell {
+  direction: ltr;
+  text-align: start;
+  font-size: 0.875rem;
+}
+
+.role-badge {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 0.8125rem;
+  background: #e3f2fd;
+  color: #1565c0;
+}
+
+.role-badge.role-admin {
+  background: #ede7f6;
+  color: #4527a0;
+}
+
+.role-cell-self {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.self-hint {
+  font-size: 0.8125rem;
+  color: rgb(0 0 0 / 45%);
+}
+
+.role-field {
+  width: 132px;
+  margin: 0;
+
+  .mat-mdc-form-field-subscript-wrapper {
+    display: none;
+  }
+}
+
+.panel-card mat-card-header {
+  margin-block-end: 8px;
+}
+
+.placeholder-text {
+  margin: 0;
+  padding: 16px;
+  border-radius: 8px;
+  background: rgb(63 81 181 / 6%);
+  color: rgb(0 0 0 / 70%);
+  line-height: 1.5;
+}
+
+@include bp.tablet-up {
+  .header-text {
+    text-align: start;
+  }
+
+  .page-nav {
+    justify-content: flex-start;
+  }
+
+  .panel-toolbar {
+    flex-direction: row;
+    align-items: flex-end;
+    justify-content: space-between;
+  }
+
+  .toolbar-start {
+    flex-direction: row;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+}
+
+@include bp.handset {
+  .page-header h1 {
+    font-size: 1.5rem;
+  }
+
+  .tab-panel {
+    padding-block-start: 16px;
+  }
+}

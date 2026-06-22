@@ -1,0 +1,64 @@
+@use '../../../shared/styles/breakpoints' as bp;
+
+.dialog-subtitle {
+  margin: 0 0 16px;
+  color: rgb(0 0 0 / 60%);
+  line-height: 1.5;
+}
+
+.dialog-loading {
+  margin-block-end: 12px;
+}
+
+.error-banner {
+  margin: 0 0 12px;
+  padding: 10px 12px;
+  border-radius: 8px;
+  background: #ffebee;
+  color: #c62828;
+  font-size: 0.875rem;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.ltr-input {
+  direction: ltr;
+  text-align: start;
+}
+
+.serving-section {
+  margin-block-start: 8px;
+  padding-block-start: 12px;
+  border-top: 1px solid rgb(0 0 0 / 12%);
+}
+
+.section-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-block-end: 12px;
+}
+
+.section-header h3 {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+.serving-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr auto;
+  gap: 8px;
+  align-items: start;
+  margin-block-end: 8px;
+}
+
+@include bp.handset {
+  .serving-row {
+    grid-template-columns: 1fr;
+  }
+}

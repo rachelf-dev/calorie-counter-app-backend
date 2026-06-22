@@ -1,6 +1,7 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { HttpErrorResponse } from '@angular/common/http';
+import { Router } from '@angular/router';
 import { finalize } from 'rxjs';
 
 import { MatCardModule } from '@angular/material/card';
@@ -39,6 +40,7 @@ export class ProfileComponent implements OnInit {
   private readonly authService = inject(AuthService);
   private readonly userService = inject(UserService);
   private readonly toastr = inject(ToastrService);
+  private readonly router = inject(Router);
 
   readonly loading = signal(false);
   readonly imageLoading = signal(false);
@@ -92,6 +94,12 @@ export class ProfileComponent implements OnInit {
           this.toastr.error(err.error?.message ?? 'אירעה שגיאה בעדכון הפרופיל');
         },
       });
+  }
+
+  logout(): void {
+    this.authService.logout();
+    this.toastr.info('התנתקת בהצלחה');
+    this.router.navigate(['/login']);
   }
 
   onImageSelected(event: Event): void {

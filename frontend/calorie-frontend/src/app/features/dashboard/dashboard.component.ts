@@ -53,7 +53,7 @@ export class DashboardComponent implements OnInit {
   private readonly actions$ = inject(Actions);
   private readonly router = inject(Router);
   private readonly route = inject(ActivatedRoute);
-  private readonly authService = inject(AuthService);
+  protected readonly authService = inject(AuthService);
   private readonly toastr = inject(ToastrService);
   private readonly destroyRef = inject(DestroyRef);
 
@@ -153,5 +153,11 @@ export class DashboardComponent implements OnInit {
         },
       })
     );
+  }
+
+  logout(): void {
+    this.authService.logout();
+    this.toastr.info('התנתקת בהצלחה');
+    this.router.navigate(['/login']);
   }
 }

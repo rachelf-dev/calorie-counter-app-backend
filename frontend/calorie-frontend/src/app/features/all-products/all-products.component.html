@@ -14,6 +14,12 @@
           <mat-icon>inventory_2</mat-icon>
           המוצרים שלי
         </a>
+        @if (authService.currentUser()?.role === 'admin') {
+          <a mat-flat-button color="primary" routerLink="/admin">
+            <mat-icon>add</mat-icon>
+            הוסף למאגר הכללי
+          </a>
+        }
       </nav>
     </div>
   </header>

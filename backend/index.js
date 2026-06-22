@@ -5,6 +5,7 @@ const dotenv = require('dotenv');
 
 const connectDB = require('./config/db');
 const createLogger = require('./middleware/logger.middleware');
+const { startWeeklyEmailJob } = require('./jobs/weekly-email.job');
 const authRoutes = require('./routes/auth.routes');
 
 dotenv.config();
@@ -53,6 +54,7 @@ app.use((err, req, res, next) => {
 
 async function startServer() {
   await connectDB();
+  startWeeklyEmailJob();
 
   app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);

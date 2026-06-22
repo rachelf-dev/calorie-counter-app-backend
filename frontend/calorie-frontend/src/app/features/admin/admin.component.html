@@ -1,0 +1,200 @@
+<div class="admin-page">
+  <header class="page-header">
+    <div class="header-text">
+      <h1>ניהול מערכת</h1>
+      <p class="subtitle">גישה למנהל בלבד — מוצרים גלובליים ומשתמשים</p>
+      <nav class="page-nav" aria-label="ניווט">
+        <a mat-button routerLink="/dashboard">
+          <mat-icon>home</mat-icon>
+          לוח הבקרה
+        </a>
+      </nav>
+    </div>
+  </header>
+
+  <mat-tab-group
+    class="admin-tabs"
+    [selectedIndex]="tabIndex()"
+    (selectedIndexChange)="onTabChange($event)"
+    animationDuration="200ms"
+  >
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <mat-icon class="tab-icon" aria-hidden="true">inventory_2</mat-icon>
+        מוצרים גלובליים
+      </ng-template>
+
+      <section class="tab-panel" aria-label="ניהול מוצרים גלובליים">
+        <div class="panel-toolbar">
+          <div class="toolbar-start">
+            <p class="panel-hint">רק מנהל יכול להוסיף או למחוק מוצרים גלובליים</p>
+            <button mat-flat-button color="primary" type="button" (click)="openAddGlobalProductDialog()">
+              <mat-icon>add</mat-icon>
+              הוסף מוצר גלובלי
+            </button>
+          </div>
+          <mat-form-field appearance="outline" class="search-field" subscriptSizing="dynamic">
+            <mat-label>חיפוש מוצר</mat-label>
+            <input matInput [formControl]="productSearchControl" autocomplete="off" />
+            <mat-icon matPrefix aria-hidden="true">search</mat-icon>
+          </mat-form-field>
+        </div>
+
+        @if (productsLoading()) {
+          <mat-progress-bar mode="indeterminate" class="panel-loading" />
+        }
+
+        @if (productsError(); as err) {
+          <p class="error-banner" role="alert">{{ err }}</p>
+        }
+
+        @if (!productsLoading() && !productsError() && globalProducts().length === 0) {
+          <div class="empty-state">
+            <p>לא נמצאו מוצרים גלובליים.</p>
+            <button mat-stroked-button color="primary" type="button" (click)="openAddGlobalProductDialog()">
+              <mat-icon>add</mat-icon>
+              הוסף מוצר גלובלי ראשון
+            </button>
+          </div>
+        }
+
+        @if (globalProducts().length > 0) {
+          <div class="table-wrapper">
+            <table mat-table [dataSource]="globalProducts()" class="admin-table">
+              <ng-container matColumnDef="name">
+                <th mat-header-cell *matHeaderCellDef>שם</th>
+                <td mat-cell *matCellDef="let product">{{ product.name }}</td>
+              </ng-container>
+
+              <ng-container matColumnDef="calories">
+                <th mat-header-cell *matHeaderCellDef>קלוריות / 100 ג׳</th>
+                <td mat-cell *matCellDef="let product">
+                  {{ product.caloriesPer100g | calorieFormat }}
+                </td>
+              </ng-container>
+
+              <ng-container matColumnDef="servingSizes">
+                <th mat-header-cell *matHeaderCellDef>יחידות מידה</th>
+                <td mat-cell *matCellDef="let product" class="serving-cell">
+                  {{ servingSizesSummary(product) }}
+                </td>
+              </ng-container>
+
+              <ng-container matColumnDef="actions">
+                <th mat-header-cell *matHeaderCellDef>פעולות</th>
+                <td mat-cell *matCellDef="let product">
+                  <button
+                    mat-icon-button
+                    type="button"
+                    color="warn"
+                    aria-label="מחק מוצר גלובלי"
+                    [disabled]="deletingProductId() === product._id"
+                    (click)="confirmDeleteProduct(product)"
+                  >
+                    <mat-icon>delete</mat-icon>
+                  </button>
+                </td>
+              </ng-container>
+
+              <tr mat-header-row *matHeaderRowDef="productColumns"></tr>
+              <tr mat-row *matRowDef="let row; columns: productColumns"></tr>
+            </table>
+          </div>
+
+          <p class="results-count">{{ globalProducts().length }} מוצרים גלובליים</p>
+        }
+      </section>
+    </mat-tab>
+
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <mat-icon class="tab-icon" aria-hidden="true">group</mat-icon>
+        ניהול משתמשים
+      </ng-template>
+
+      <section class="tab-panel" aria-label="ניהול משתמשים">
+        <p class="panel-hint">שינוי תפקיד ומחיקה — לא ניתן לשנות או למחוק את המשתמש המחובר (את)</p>
+
+        @if (usersLoading()) {
+          <mat-progress-bar mode="indeterminate" class="panel-loading" />
+        }
+
+        @if (usersError(); as err) {
+          <p class="error-banner" role="alert">{{ err }}</p>
+        }
+
+        @if (!usersLoading() && !usersError() && users().length === 0) {
+          <p class="empty-state">אין משתמשים רשומים.</p>
+        }
+
+        @if (users().length > 0) {
+          <div class="table-wrapper">
+            <table mat-table [dataSource]="users()" class="admin-table">
+              <ng-container matColumnDef="name">
+                <th mat-header-cell *matHeaderCellDef>שם</th>
+                <td mat-cell *matCellDef="let user">{{ user.name }}</td>
+              </ng-container>
+
+              <ng-container matColumnDef="email">
+                <th mat-header-cell *matHeaderCellDef>אימייל</th>
+                <td mat-cell *matCellDef="let user" class="email-cell">{{ user.email }}</td>
+              </ng-container>
+
+              <ng-container matColumnDef="role">
+                <th mat-header-cell *matHeaderCellDef>תפקיד</th>
+                <td mat-cell *matCellDef="let user">
+                  @if (isCurrentUser(user)) {
+                    <span class="role-cell-self">
+                      <span class="role-badge" [class.role-admin]="user.role === 'admin'">
+                        {{ roleLabel(user.role) }}
+                      </span>
+                      <span class="self-hint">(את)</span>
+                    </span>
+                  } @else {
+                    <mat-form-field appearance="outline" class="role-field" subscriptSizing="dynamic">
+                      <mat-select
+                        [value]="user.role"
+                        [disabled]="updatingRoleUserId() === user._id"
+                        (selectionChange)="onUserRoleChange(user, $event.value)"
+                        aria-label="שינוי תפקיד עבור {{ user.name }}"
+                      >
+                        @for (role of roleOptions; track role) {
+                          <mat-option [value]="role">{{ roleLabel(role) }}</mat-option>
+                        }
+                      </mat-select>
+                    </mat-form-field>
+                  }
+                </td>
+              </ng-container>
+
+              <ng-container matColumnDef="actions">
+                <th mat-header-cell *matHeaderCellDef>פעולות</th>
+                <td mat-cell *matCellDef="let user">
+                  @if (isCurrentUser(user)) {
+                    <span class="self-hint">—</span>
+                  } @else {
+                    <button
+                      mat-icon-button
+                      type="button"
+                      color="warn"
+                      aria-label="מחק משתמש"
+                      [disabled]="deletingUserId() === user._id"
+                      (click)="confirmDeleteUser(user)"
+                    >
+                      <mat-icon>delete</mat-icon>
+                    </button>
+                  }
+                </td>
+              </ng-container>
+
+              <tr mat-header-row *matHeaderRowDef="userColumns"></tr>
+              <tr mat-row *matRowDef="let row; columns: userColumns"></tr>
+            </table>
+          </div>
+
+          <p class="results-count">{{ users().length }} משתמשים</p>
+        }
+      </section>
+    </mat-tab>
+  </mat-tab-group>
+</div>

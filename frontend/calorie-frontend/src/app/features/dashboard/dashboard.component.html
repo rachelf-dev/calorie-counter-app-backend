@@ -11,6 +11,20 @@
         <mat-icon>storefront</mat-icon>
         מוצרים כלליים
       </a>
+      @if (authService.currentUser()?.role === 'admin') {
+        <a mat-button routerLink="/admin">
+          <mat-icon>admin_panel_settings</mat-icon>
+          ניהול מערכת
+        </a>
+      }
+      <a mat-button routerLink="/profile">
+        <mat-icon>person</mat-icon>
+        פרופיל
+      </a>
+      <button mat-button type="button" (click)="logout()">
+        <mat-icon>logout</mat-icon>
+        התנתקות
+      </button>
     </nav>
   </header>
 
