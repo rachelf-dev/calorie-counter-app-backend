@@ -29,7 +29,14 @@ export class AuthService {
   private static readonly TOKEN_KEY = 'token';
   private static readonly USER_KEY = 'user';
 
-  readonly currentUser = signal<User | null>(this.readStoredUser());
+  readonly currentUser = signal<User | null>(AuthService.getStoredSession().user);
+
+  /** Used by the NgRx auth reducer to hydrate state on app bootstrap. */
+  static getStoredSession(): { user: User | null; token: string | null } {
+    const token = localStorage.getItem(AuthService.TOKEN_KEY);
+    const user = AuthService.readStoredUserFromStorage();
+    return { user, token };
+  }
 
   register(payload: RegisterPayload): Observable<AuthResponse> {
     return this.http
@@ -68,7 +75,7 @@ export class AuthService {
     this.currentUser.set(res.user);
   }
 
-  private readStoredUser(): User | null {
+  private static readStoredUserFromStorage(): User | null {
     const raw = localStorage.getItem(AuthService.USER_KEY);
     if (!raw) {
       return null;

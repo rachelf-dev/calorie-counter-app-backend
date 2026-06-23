@@ -1,8 +1,8 @@
+import { AsyncPipe } from '@angular/common';
 import { Component, inject, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-import { HttpErrorResponse } from '@angular/common/http';
-import { finalize } from 'rxjs';
+import { ActivatedRoute, RouterLink } from '@angular/router';
+import { Store } from '@ngrx/store';
 
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -10,14 +10,15 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
-import { ToastrService } from 'ngx-toastr';
 
-import { AuthService } from '../../../core/services/auth.service';
+import { AuthActions } from '../../../store/auth/auth.actions';
+import { selectAuthLoading } from '../../../store/auth/auth.selectors';
 
 @Component({
   selector: 'app-login',
   standalone: true,
   imports: [
+    AsyncPipe,
     ReactiveFormsModule,
     RouterLink,
     MatCardModule,
@@ -32,12 +33,10 @@ import { AuthService } from '../../../core/services/auth.service';
 })
 export class LoginComponent {
   private readonly fb = inject(FormBuilder);
-  private readonly authService = inject(AuthService);
-  private readonly router = inject(Router);
+  private readonly store = inject(Store);
   private readonly route = inject(ActivatedRoute);
-  private readonly toastr = inject(ToastrService);
 
-  readonly loading = signal(false);
+  readonly loading$ = this.store.select(selectAuthLoading);
   readonly hidePassword = signal(true);
 
   readonly form = this.fb.nonNullable.group({
@@ -51,22 +50,12 @@ export class LoginComponent {
       return;
     }
 
-    this.loading.set(true);
-    this.authService
-      .login(this.form.getRawValue())
-      .pipe(finalize(() => this.loading.set(false)))
-      .subscribe({
-        next: (res) => {
-          this.toastr.success(`ברוך הבא, ${res.user.name}`);
-          const returnUrl = this.route.snapshot.queryParamMap.get('returnUrl') ?? 'dashboard';
-          const search = this.route.snapshot.queryParamMap.get('search');
-          this.router.navigate([`/${returnUrl}`], {
-            ...(search ? { queryParams: { search } } : {}),
-          });
-        },
-        error: (err: HttpErrorResponse) => {
-          this.toastr.error(err.error?.message ?? 'אירעה שגיאה בהתחברות');
-        },
-      });
+    const { email, password } = this.form.getRawValue();
+    const returnUrl = this.route.snapshot.queryParamMap.get('returnUrl') ?? undefined;
+    const search = this.route.snapshot.queryParamMap.get('search') ?? undefined;
+
+    this.store.dispatch(
+      AuthActions.login({ email, password, returnUrl, search })
+    );
   }
 }

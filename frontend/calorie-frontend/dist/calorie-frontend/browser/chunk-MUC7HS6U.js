@@ -1,0 +1,1 @@
+import{b as r,c as s,d as e}from"./chunk-BGFQD5PC.js";var i=s({source:"Auth",events:{Login:r(),"Login Success":r(),"Login Failure":r(),Register:r(),"Register Success":r(),"Register Failure":r(),"Set User":r(),Logout:e()}});export{i as a};

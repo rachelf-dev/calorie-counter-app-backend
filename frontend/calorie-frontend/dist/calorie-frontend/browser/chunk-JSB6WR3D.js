@@ -1,1 +1,0 @@
-import{Fb as n,Gb as s,bc as p,mb as o}from"./chunk-HFRIHTA3.js";var m=class t{static \u0275fac=function(e){return new(e||t)};static \u0275cmp=o({type:t,selectors:[["app-my-products"]],decls:2,vars:0,template:function(e,a){e&1&&(n(0,"p"),p(1,"My Products \u2014 Day 5 (Developer B)"),s())},encapsulation:2})};export{m as MyProductsComponent};

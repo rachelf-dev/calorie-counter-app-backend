@@ -1,7 +1,7 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { HttpErrorResponse } from '@angular/common/http';
-import { Router } from '@angular/router';
+import { Store } from '@ngrx/store';
 import { finalize } from 'rxjs';
 
 import { MatCardModule } from '@angular/material/card';
@@ -15,6 +15,7 @@ import { ToastrService } from 'ngx-toastr';
 
 import { AuthService } from '../../core/services/auth.service';
 import { UserService } from '../../core/services/user.service';
+import { AuthActions } from '../../store/auth/auth.actions';
 
 const ALLOWED_IMAGE_TYPES = ['image/jpeg', 'image/png', 'image/webp'];
 const MAX_IMAGE_SIZE_BYTES = 2 * 1024 * 1024;
@@ -40,7 +41,7 @@ export class ProfileComponent implements OnInit {
   private readonly authService = inject(AuthService);
   private readonly userService = inject(UserService);
   private readonly toastr = inject(ToastrService);
-  private readonly router = inject(Router);
+  private readonly store = inject(Store);
 
   readonly loading = signal(false);
   readonly imageLoading = signal(false);
@@ -87,7 +88,7 @@ export class ProfileComponent implements OnInit {
       .pipe(finalize(() => this.loading.set(false)))
       .subscribe({
         next: (user) => {
-          this.authService.updateCurrentUser(user);
+          this.store.dispatch(AuthActions.setUser({ user }));
           this.toastr.success('הפרופיל עודכן בהצלחה');
         },
         error: (err: HttpErrorResponse) => {
@@ -97,9 +98,7 @@ export class ProfileComponent implements OnInit {
   }
 
   logout(): void {
-    this.authService.logout();
-    this.toastr.info('התנתקת בהצלחה');
-    this.router.navigate(['/login']);
+    this.store.dispatch(AuthActions.logout());
   }
 
   onImageSelected(event: Event): void {
@@ -127,7 +126,7 @@ export class ProfileComponent implements OnInit {
       .pipe(finalize(() => this.imageLoading.set(false)))
       .subscribe({
         next: (user) => {
-          this.authService.updateCurrentUser(user);
+          this.store.dispatch(AuthActions.setUser({ user }));
           this.profileImageUrl.set(this.userService.imageUrl(user.profileImage));
           this.toastr.success('תמונת הפרופיל עודכנה');
         },

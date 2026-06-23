@@ -1,6 +1,6 @@
 <div class="auth-page">
   <mat-card class="auth-card" appearance="outlined">
-    @if (loading()) {
+    @if (loading$ | async) {
       <mat-progress-bar mode="indeterminate" />
     }
 
@@ -61,7 +61,7 @@
           color="primary"
           type="submit"
           class="full-width submit-btn"
-          [disabled]="loading()"
+          [disabled]="loading$ | async"
         >
           התחברות
         </button>

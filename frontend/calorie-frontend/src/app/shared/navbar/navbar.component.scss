@@ -1,0 +1,115 @@
+.navbar-shell {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.navbar-toolbar {
+  gap: 0.25rem;
+  min-height: 64px;
+  padding-inline: 1rem;
+}
+
+.brand {
+  font-size: 1.125rem;
+  font-weight: 600;
+  white-space: nowrap;
+  margin-inline-end: 1rem;
+}
+
+.spacer {
+  flex: 1 1 auto;
+}
+
+.desktop-nav {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.125rem;
+}
+
+.nav-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+
+  mat-icon {
+    font-size: 1.125rem;
+    width: 1.125rem;
+    height: 1.125rem;
+  }
+
+  &.active {
+    background-color: rgba(255, 255, 255, 0.12);
+  }
+}
+
+.profile-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  max-width: 12rem;
+
+  &.active {
+    background-color: rgba(255, 255, 255, 0.12);
+  }
+}
+
+.profile-name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.avatar--large {
+  width: 56px;
+  height: 56px;
+}
+
+.avatar-placeholder {
+  width: 56px;
+  height: 56px;
+  font-size: 56px;
+}
+
+.mobile-sidenav {
+  width: min(280px, 85vw);
+  padding-top: 0.5rem;
+}
+
+.sidenav-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 1.5rem 1rem 1rem;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.user-name {
+  font-weight: 600;
+  text-align: center;
+}
+
+mat-nav-list a.active {
+  background-color: rgba(0, 0, 0, 0.04);
+}
+
+@media (max-width: 768px) {
+  .brand {
+    font-size: 1rem;
+    margin-inline-end: 0.5rem;
+  }
+
+  .profile-name {
+    display: none;
+  }
+}

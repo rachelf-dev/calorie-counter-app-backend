@@ -11,6 +11,8 @@ import { provideCharts, withDefaultRegisterables } from 'ng2-charts';
 
 import { routes } from './app.routes';
 import { appInterceptor } from './core/interceptors/app.interceptor';
+import { authReducer } from './store/auth/auth.reducer';
+import { AuthEffects } from './store/auth/auth.effects';
 import { logsReducer } from './store/logs/logs.reducer';
 import { LogsEffects } from './store/logs/logs.effects';
 
@@ -24,8 +26,8 @@ export const appConfig: ApplicationConfig = {
     provideHttpClient(withInterceptors([appInterceptor])),
     provideAnimations(),
     provideCharts(withDefaultRegisterables()),
-    provideStore({ logs: logsReducer }),
-    provideEffects([LogsEffects]),
+    provideStore({ logs: logsReducer, auth: authReducer }),
+    provideEffects([LogsEffects, AuthEffects]),
     provideToastr({
       timeOut: 4000,
       positionClass: 'toast-top-left',

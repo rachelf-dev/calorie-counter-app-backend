@@ -1,1 +1,0 @@
-import{Fb as o,Gb as m,bc as a,mb as t}from"./chunk-HFRIHTA3.js";var i=class n{static \u0275fac=function(e){return new(e||n)};static \u0275cmp=t({type:n,selectors:[["app-admin"]],decls:2,vars:0,template:function(e,s){e&1&&(o(0,"p"),a(1,"Admin \u2014 Day 6 (Developer B)"),m())},encapsulation:2})};export{i as AdminComponent};

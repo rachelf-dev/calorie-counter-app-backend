@@ -1,0 +1,1 @@
+import{eb as n}from"./chunk-3Q57M4B7.js";var t=class e{transform(r){return r==null||Number.isNaN(r)?"\u2014":Math.round(r).toLocaleString("he-IL")+" \u05E7\u05E7\u05F4\u05DC"}static \u0275fac=function(i){return new(i||e)};static \u0275pipe=n({name:"calorieFormat",type:e,pure:!0})};export{t as a};

@@ -1,8 +1,8 @@
+import { AsyncPipe } from '@angular/common';
 import { Component, inject, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Router, RouterLink } from '@angular/router';
-import { HttpErrorResponse } from '@angular/common/http';
-import { finalize } from 'rxjs';
+import { RouterLink } from '@angular/router';
+import { Store } from '@ngrx/store';
 
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -10,15 +10,16 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
-import { ToastrService } from 'ngx-toastr';
 
-import { AuthService } from '../../../core/services/auth.service';
+import { AuthActions } from '../../../store/auth/auth.actions';
+import { selectAuthLoading } from '../../../store/auth/auth.selectors';
 import { passwordMatchValidator } from '../../../shared/validators/auth.validators';
 
 @Component({
   selector: 'app-register',
   standalone: true,
   imports: [
+    AsyncPipe,
     ReactiveFormsModule,
     RouterLink,
     MatCardModule,
@@ -33,11 +34,9 @@ import { passwordMatchValidator } from '../../../shared/validators/auth.validato
 })
 export class RegisterComponent {
   private readonly fb = inject(FormBuilder);
-  private readonly authService = inject(AuthService);
-  private readonly router = inject(Router);
-  private readonly toastr = inject(ToastrService);
+  private readonly store = inject(Store);
 
-  readonly loading = signal(false);
+  readonly loading$ = this.store.select(selectAuthLoading);
   readonly hidePassword = signal(true);
   readonly hideConfirmPassword = signal(true);
 
@@ -58,19 +57,6 @@ export class RegisterComponent {
     }
 
     const { name, email, password } = this.form.getRawValue();
-
-    this.loading.set(true);
-    this.authService
-      .register({ name, email, password })
-      .pipe(finalize(() => this.loading.set(false)))
-      .subscribe({
-        next: (res) => {
-          this.toastr.success(`ברוך הבא, ${res.user.name}`);
-          this.router.navigate(['/dashboard']);
-        },
-        error: (err: HttpErrorResponse) => {
-          this.toastr.error(err.error?.message ?? 'אירעה שגיאה בהרשמה');
-        },
-      });
+    this.store.dispatch(AuthActions.register({ name, email, password }));
   }
 }
