@@ -1,23 +1,23 @@
 <div class="dashboard-page">
   <header class="dashboard-header">
     <h1>לוח בקרה יומי</h1>
-    <p class="subtitle">חפשי מוצר, הוסיפי לסל ועקבי אחרי הקלוריות שלך</p>
+    <p class="subtitle">חפש מוצר, הוסף לסל ועקוב אחרי הקלוריות שלך</p>
     <nav class="page-nav" aria-label="ניווט מהיר">
-      <a mat-button routerLink="/my-products">
+      <a mat-button routerLink="/my-products" routerLinkActive="active">
         <mat-icon>inventory_2</mat-icon>
         המוצרים שלי
       </a>
-      <a mat-button routerLink="/products">
+      <a mat-button routerLink="/products" routerLinkActive="active">
         <mat-icon>storefront</mat-icon>
         מוצרים כלליים
       </a>
       @if (authService.currentUser()?.role === 'admin') {
-        <a mat-button routerLink="/admin">
+        <a mat-button routerLink="/admin" routerLinkActive="active">
           <mat-icon>admin_panel_settings</mat-icon>
           ניהול מערכת
         </a>
       }
-      <a mat-button routerLink="/profile">
+      <a mat-button routerLink="/profile" routerLinkActive="active">
         <mat-icon>person</mat-icon>
         פרופיל
       </a>

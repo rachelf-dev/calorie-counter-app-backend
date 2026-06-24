@@ -11,16 +11,16 @@
 }
 
 .option-meta {
-  margin-inline-start: 8px;
+  margin-inline-start: var(--space-2);
   font-size: 0.85rem;
-  color: rgb(0 0 0 / 54%);
+  color: var(--text-muted);
 }
 
 .search-error {
-  margin: -8px 0 0;
-  padding: 8px 12px;
-  border-radius: 8px;
-  background: #fff3e0;
-  color: #e65100;
+  margin: calc(-1 * var(--space-2)) 0 0;
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-sm);
+  background: var(--tint-warning);
+  color: var(--status-warning-text);
   font-size: 0.9rem;
 }

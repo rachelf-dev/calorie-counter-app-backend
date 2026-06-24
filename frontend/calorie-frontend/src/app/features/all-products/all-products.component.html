@@ -2,15 +2,13 @@
   <header class="page-header">
     <div class="header-text">
       <h1>מוצרים כלליים</h1>
-      <p class="subtitle">
-        מאגר המוצרים הגלובלי — {{ products().length }} מוצרים
-      </p>
+      <p class="subtitle">מאגר המוצרים הגלובלי</p>
       <nav class="page-nav" aria-label="ניווט">
-        <a mat-button routerLink="/dashboard">
+        <a mat-button routerLink="/dashboard" routerLinkActive="active">
           <mat-icon>home</mat-icon>
           לוח הבקרה
         </a>
-        <a mat-button routerLink="/my-products">
+        <a mat-button routerLink="/my-products" routerLinkActive="active">
           <mat-icon>inventory_2</mat-icon>
           המוצרים שלי
         </a>

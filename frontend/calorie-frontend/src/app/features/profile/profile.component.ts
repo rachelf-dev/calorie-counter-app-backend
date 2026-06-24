@@ -1,3 +1,4 @@
+import { Location } from '@angular/common';
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { HttpErrorResponse } from '@angular/common/http';
@@ -42,6 +43,7 @@ export class ProfileComponent implements OnInit {
   private readonly userService = inject(UserService);
   private readonly toastr = inject(ToastrService);
   private readonly store = inject(Store);
+  private readonly location = inject(Location);
 
   readonly loading = signal(false);
   readonly imageLoading = signal(false);
@@ -65,6 +67,10 @@ export class ProfileComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadProfile();
+  }
+
+  goBack(): void {
+    this.location.back();
   }
 
   onSubmit(): void {

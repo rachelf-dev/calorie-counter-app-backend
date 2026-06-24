@@ -1,8 +1,19 @@
 <div class="profile-page">
   <mat-card class="profile-card">
-    <mat-card-header>
-      <mat-card-title>הפרופיל שלי</mat-card-title>
-      <mat-card-subtitle>עריכת פרטים אישיים ויעד קלוריות</mat-card-subtitle>
+    <mat-card-header class="profile-header">
+      <button
+        mat-icon-button
+        type="button"
+        class="back-btn"
+        aria-label="חזרה לעמוד הקודם"
+        (click)="goBack()"
+      >
+        <mat-icon>arrow_forward</mat-icon>
+      </button>
+      <div class="header-text">
+        <mat-card-title>הפרופיל שלי</mat-card-title>
+        <mat-card-subtitle>עריכת פרטים אישיים ויעד קלוריות</mat-card-subtitle>
+      </div>
     </mat-card-header>
 
     @if (loading()) {

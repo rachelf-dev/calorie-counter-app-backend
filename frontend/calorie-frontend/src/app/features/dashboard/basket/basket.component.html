@@ -6,7 +6,7 @@
 
   <mat-card-content>
     @if (items.length === 0) {
-      <p class="empty-basket">הסל ריק — חפשי מוצר והוסיפי לסל</p>
+      <p class="empty-basket">הסל ריק — חפש מוצר והוסף לסל</p>
     } @else {
       <mat-list class="basket-list" aria-label="פריטים בסל">
         @for (item of items; track item._id) {

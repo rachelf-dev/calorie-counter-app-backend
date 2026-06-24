@@ -62,18 +62,34 @@ export class WeeklyChartComponent implements OnInit {
     plugins: {
       legend: {
         position: 'top',
+        labels: {
+          color: '#5A625A',
+          font: { family: 'Heebo, Segoe UI, sans-serif' },
+        },
       },
     },
     scales: {
       x: {
         reverse: false,
-        ticks: { maxRotation: 0 },
+        ticks: {
+          maxRotation: 0,
+          color: '#8A928A',
+          font: { family: 'Heebo, Segoe UI, sans-serif' },
+        },
+        grid: { color: 'rgba(234, 237, 231, 0.8)' },
       },
       y: {
         beginAtZero: true,
+        ticks: {
+          color: '#8A928A',
+          font: { family: 'Heebo, Segoe UI, sans-serif' },
+        },
+        grid: { color: 'rgba(234, 237, 231, 0.8)' },
         title: {
           display: true,
           text: 'קק״ל',
+          color: '#5A625A',
+          font: { family: 'Heebo, Segoe UI, sans-serif', weight: 500 },
         },
       },
     },
@@ -137,19 +153,22 @@ export class WeeklyChartComponent implements OnInit {
           label: 'נצרך',
           data: consumed,
           type: 'bar',
-          backgroundColor: 'rgba(63, 81, 181, 0.75)',
+          backgroundColor: '#7AC70C',
+          borderColor: '#5C9A09',
+          borderWidth: 1,
           borderRadius: 4,
         },
         {
           label: 'יעד',
           data: targets,
           type: 'line',
-          borderColor: '#ff9800',
+          borderColor: 'rgba(90, 98, 90, 0.65)',
           backgroundColor: 'transparent',
           borderWidth: 2,
           borderDash: [6, 4],
           pointRadius: 3,
           pointHoverRadius: 5,
+          pointBackgroundColor: 'rgba(90, 98, 90, 0.65)',
         },
       ],
     });

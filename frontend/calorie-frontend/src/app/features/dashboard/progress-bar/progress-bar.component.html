@@ -1,11 +1,23 @@
 <div class="progress-panel" [class]="statusClass" [appCalorieWarning]="percentConsumed">
-  <p class="progress-label">
-    {{ totalCalories | calorieFormat }}
-    <span class="progress-separator">מתוך</span>
-    {{ goal | calorieFormat }}
-  </p>
+  <div class="progress-header">
+    <p class="progress-label">
+      {{ totalCalories | calorieFormat }}
+      <span class="progress-separator">מתוך</span>
+      {{ goal | calorieFormat }}
+    </p>
+    <span class="progress-status" [attr.aria-label]="statusLabel">
+      <mat-icon aria-hidden="true">{{ statusIcon }}</mat-icon>
+      {{ statusLabel }}
+    </span>
+  </div>
 
-  <mat-progress-bar mode="determinate" [value]="barValue" />
+  <mat-progress-bar
+    mode="determinate"
+    [value]="barValue"
+    [attr.aria-valuenow]="percentConsumed"
+    aria-valuemin="0"
+    aria-valuemax="100"
+  />
 
   <p class="progress-percent">{{ percentConsumed | number: '1.0-0' }}% מהיעד</p>
 </div>

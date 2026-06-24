@@ -14,9 +14,9 @@
       </mat-card-title>
       <mat-card-subtitle>
         @if (isEditMode()) {
-          עדכני את פרטי המוצר ושמרי
+          עדכן את פרטי המוצר ושמור
         } @else {
-          מלאי את פרטי המוצר ושמרי
+          מלא את פרטי המוצר ושמור
         }
       </mat-card-subtitle>
     </mat-card-header>
@@ -73,7 +73,7 @@
                   }
                 </mat-select>
                 @if (group.controls['unit'].touched && group.controls['unit'].hasError('required')) {
-                  <mat-error>בחרי יחידה</mat-error>
+                  <mat-error>בחר יחידה</mat-error>
                 }
               </mat-form-field>
 

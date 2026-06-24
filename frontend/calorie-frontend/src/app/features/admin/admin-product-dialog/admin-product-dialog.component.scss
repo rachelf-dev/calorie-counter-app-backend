@@ -1,21 +1,21 @@
 @use '../../../shared/styles/breakpoints' as bp;
 
 .dialog-subtitle {
-  margin: 0 0 16px;
-  color: rgb(0 0 0 / 60%);
+  margin: 0 0 var(--space-4);
+  color: var(--text-secondary);
   line-height: 1.5;
 }
 
 .dialog-loading {
-  margin-block-end: 12px;
+  margin-block-end: var(--space-3);
 }
 
 .error-banner {
-  margin: 0 0 12px;
-  padding: 10px 12px;
-  border-radius: 8px;
-  background: #ffebee;
-  color: #c62828;
+  margin: 0 0 var(--space-3);
+  padding: 10px var(--space-3);
+  border-radius: var(--radius-sm);
+  background: var(--tint-danger);
+  color: var(--status-danger-text);
   font-size: 0.875rem;
 }
 
@@ -29,9 +29,9 @@
 }
 
 .serving-section {
-  margin-block-start: 8px;
-  padding-block-start: 12px;
-  border-top: 1px solid rgb(0 0 0 / 12%);
+  margin-block-start: var(--space-2);
+  padding-block-start: var(--space-3);
+  border-top: 1px solid var(--border);
 }
 
 .section-header {
@@ -39,8 +39,8 @@
   flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
-  gap: 12px;
-  margin-block-end: 12px;
+  gap: var(--space-3);
+  margin-block-end: var(--space-3);
 }
 
 .section-header h3 {
@@ -52,9 +52,9 @@
 .serving-row {
   display: grid;
   grid-template-columns: 1fr 1fr auto;
-  gap: 8px;
+  gap: var(--space-2);
   align-items: start;
-  margin-block-end: 8px;
+  margin-block-end: var(--space-2);
 }
 
 @include bp.handset {

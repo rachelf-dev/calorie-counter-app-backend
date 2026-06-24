@@ -1,6 +1,7 @@
 import { DecimalPipe } from '@angular/common';
 import { Component, Input } from '@angular/core';
 
+import { MatIconModule } from '@angular/material/icon';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 
 import { CalorieFormatPipe } from '../../../shared/pipes/calorie-format.pipe';
@@ -9,7 +10,13 @@ import { CalorieWarningDirective } from '../../../shared/directives/calorie-warn
 @Component({
   selector: 'app-progress-bar',
   standalone: true,
-  imports: [DecimalPipe, MatProgressBarModule, CalorieFormatPipe, CalorieWarningDirective],
+  imports: [
+    DecimalPipe,
+    MatIconModule,
+    MatProgressBarModule,
+    CalorieFormatPipe,
+    CalorieWarningDirective,
+  ],
   templateUrl: './progress-bar.component.html',
   styleUrl: './progress-bar.component.scss',
 })
@@ -39,5 +46,29 @@ export class ProgressBarComponent {
     }
 
     return 'status-ok';
+  }
+
+  get statusLabel(): string {
+    if (this.percentConsumed > 120) {
+      return 'חריגה';
+    }
+
+    if (this.percentConsumed > 100) {
+      return 'מתקרב ליעד';
+    }
+
+    return 'תקין';
+  }
+
+  get statusIcon(): string {
+    if (this.percentConsumed > 120) {
+      return 'error';
+    }
+
+    if (this.percentConsumed > 100) {
+      return 'warning';
+    }
+
+    return 'check_circle';
   }
 }

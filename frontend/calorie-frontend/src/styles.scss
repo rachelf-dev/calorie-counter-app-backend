@@ -1,16 +1,74 @@
 @use '@angular/material' as mat;
 
+// Design tokens — single source of truth per .cursorrules Design System
+:root {
+  --accent: #7ac70c;
+  --accent-hover: #6bb00a;
+  --accent-active: #5c9a09;
+  --tint-soft: #f2fae5;
+  --tint-faint: #fafdf4;
+  --surface: #ffffff;
+  --bg: #fafbf8;
+  --text: #1a1d1a;
+  --text-secondary: #5a625a;
+  --text-muted: #8a928a;
+  --border: #eaede7;
+  --status-warning: #f5a623;
+  --status-warning-text: #8a5a00;
+  --status-danger: #e5484d;
+  --status-danger-text: #b42318;
+  --status-success: #5c9a09;
+  --nav-link: #4a7d08;
+  --nav-link-hover: #3d6606;
+  --tint-warning: #fef5e7;
+  --tint-danger: #fdeeee;
+  --tint-info: #f2fae5;
+
+  --radius: 12px;
+  --radius-sm: 8px;
+  --radius-btn: 10px;
+  --radius-btn-sm: 4px;
+  --radius-pill: 999px;
+
+  --shadow-card: 0 2px 8px rgb(26 29 26 / 6%);
+  --shadow-raised: 0 6px 20px rgb(26 29 26 / 8%);
+  --transition: 0.2s ease;
+
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-6: 24px;
+  --space-8: 32px;
+
+  // Material system token overrides (lime brand)
+  --mat-sys-primary: var(--accent);
+  --mat-sys-on-primary: #ffffff;
+  --mat-sys-primary-container: var(--tint-soft);
+  --mat-sys-on-primary-container: var(--accent-active);
+  --mat-sys-surface: var(--surface);
+  --mat-sys-on-surface: var(--text);
+  --mat-sys-surface-container-lowest: var(--bg);
+  --mat-sys-outline: var(--border);
+  --mat-sys-outline-variant: var(--border);
+}
+
 // RTL: Angular Material 21 uses html[dir='rtl'] + CDK Directionality
-// (the legacy Sass $direction flag is not available in this version).
 html {
   @include mat.theme(
     (
       color: (
         theme-type: light,
-        primary: mat.$azure-palette,
-        tertiary: mat.$blue-palette,
+        primary: mat.$green-palette,
+        tertiary: mat.$green-palette,
       ),
-      typography: Roboto,
+      typography: (
+        plain-family: Heebo,
+        brand-family: Heebo,
+        bold-weight: 700,
+        medium-weight: 500,
+        regular-weight: 400,
+      ),
       density: 0,
     )
   );
@@ -29,23 +87,46 @@ html[dir='rtl'] body {
 
 body {
   margin: 0;
-  font-family: Roboto, 'Helvetica Neue', sans-serif;
-  background-color: #fafafa;
+  font-family: 'Heebo', 'Segoe UI', sans-serif;
+  font-weight: 400;
+  line-height: 1.5;
+  color: var(--text);
+  background-color: var(--bg);
+  -webkit-font-smoothing: antialiased;
+}
+
+// Shared card surface styling
+mat-card {
+  border-radius: var(--radius) !important;
+  box-shadow: var(--shadow-card) !important;
+  border: 1px solid var(--border);
+}
+
+// Primary buttons — lime CTA per design system
+.mat-mdc-raised-button.mat-primary,
+.mat-mdc-unelevated-button.mat-primary,
+.mat-mdc-fab.mat-primary,
+.mat-mdc-mini-fab.mat-primary {
+  border-radius: var(--radius-btn) !important;
+}
+
+.mat-mdc-icon-button {
+  border-radius: var(--radius-btn-sm) !important;
 }
 
 /* ngx-toastr: position at the visual start side in RTL */
 html[dir='rtl'] #toast-container.toast-top-left {
-  inset-inline-end: 12px;
+  inset-inline-end: var(--space-3);
   inset-inline-start: auto;
 }
 
 /* CalorieWarningDirective — global warning states */
 .warning-orange {
-  background-color: #fff3e0;
+  background-color: var(--tint-warning);
 }
 
 .warning-red {
-  background-color: #ffebee;
+  background-color: var(--tint-danger);
   animation: calorie-pulse 1.5s ease-in-out infinite;
 }
 
@@ -64,4 +145,57 @@ html[dir='rtl'] #toast-container.toast-top-left {
 html[dir='rtl'] .ltr-input {
   direction: ltr;
   text-align: start;
+}
+
+/* Shared utility classes for pages */
+.page-subtitle {
+  margin: 0;
+  color: var(--text-secondary);
+}
+
+.error-banner {
+  margin: 0 0 var(--space-4);
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-sm);
+  background: var(--tint-danger);
+  color: var(--status-danger-text);
+}
+
+.empty-state-text {
+  color: var(--text-muted);
+}
+
+/* Quick-nav links on light page background — strong green for readability */
+.page-nav {
+  a.mat-mdc-button,
+  button.mat-mdc-button {
+    --mdc-text-button-label-text-color: var(--nav-link);
+    color: var(--nav-link) !important;
+    font-weight: 500;
+    border-radius: var(--radius-btn);
+
+    mat-icon {
+      color: var(--nav-link);
+    }
+
+    &:hover {
+      background-color: var(--tint-soft);
+      color: var(--nav-link-hover) !important;
+
+      mat-icon {
+        color: var(--nav-link-hover);
+      }
+    }
+  }
+
+  a.mat-mdc-button.active,
+  a.mat-mdc-button.router-link-active {
+    background-color: var(--tint-soft);
+    color: var(--nav-link-hover) !important;
+    font-weight: 600;
+
+    mat-icon {
+      color: var(--nav-link-hover);
+    }
+  }
 }

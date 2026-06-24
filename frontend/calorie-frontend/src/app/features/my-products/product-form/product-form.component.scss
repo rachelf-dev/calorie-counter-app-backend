@@ -3,13 +3,13 @@
 .product-form-page {
   max-width: 640px;
   margin: 0 auto;
-  padding: 24px 16px 32px;
+  padding: var(--space-6) var(--space-4) var(--space-8);
   box-sizing: border-box;
 }
 
 .form-card mat-card-header {
   display: block;
-  margin-block-end: 8px;
+  margin-block-end: var(--space-2);
 }
 
 .form-card mat-card-content {
@@ -26,9 +26,9 @@
 }
 
 .serving-section {
-  margin-block-start: 16px;
-  padding-block-start: 16px;
-  border-top: 1px solid rgb(0 0 0 / 12%);
+  margin-block-start: var(--space-4);
+  padding-block-start: var(--space-4);
+  border-top: 1px solid var(--border);
 }
 
 .section-header {
@@ -36,8 +36,8 @@
   flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
-  gap: 12px;
-  margin-block-end: 12px;
+  gap: var(--space-3);
+  margin-block-end: var(--space-3);
 }
 
 .section-header h2 {
@@ -49,14 +49,14 @@
 .serving-row {
   display: grid;
   grid-template-columns: 1fr 1fr auto;
-  gap: 8px;
+  gap: var(--space-2);
   align-items: start;
-  margin-block-end: 8px;
+  margin-block-end: var(--space-2);
 }
 
 .form-actions {
-  padding: 16px 0 0;
-  gap: 8px;
+  padding: var(--space-4) 0 0;
+  gap: var(--space-2);
 }
 
 @include bp.handset {

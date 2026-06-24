@@ -41,7 +41,10 @@
 
     <mat-sidenav-content>
       <mat-toolbar color="primary" class="navbar-toolbar">
-        <span class="brand">ספירת קלוריות</span>
+        <a routerLink="/dashboard" class="brand" aria-label="קלוריקה – לוח הבקרה">
+          <mat-icon class="brand-icon" aria-hidden="true">eco</mat-icon>
+          <span class="brand-name">קלוריקה</span>
+        </a>
 
         @if (!isMobile()) {
           <nav class="desktop-nav" aria-label="ניווט ראשי">
