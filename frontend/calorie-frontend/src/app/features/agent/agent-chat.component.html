@@ -1,0 +1,102 @@
+@if (isAuthenticated$ | async) {
+  <div class="agent-chat" [class.agent-chat--open]="chatStore.isOpen()">
+    @if (chatStore.isOpen()) {
+      <section class="agent-chat__panel" aria-label="צ'אט עוזר AI">
+        <header class="agent-chat__header">
+          <div class="agent-chat__header-text">
+            <h2>עוזר AI</h2>
+            <p>שאל אותי להוסיף מוצרים, לחפש או לנהל את הסל</p>
+          </div>
+          <button
+            mat-icon-button
+            type="button"
+            aria-label="סגור צ'אט"
+            (click)="chatStore.close()"
+          >
+            <mat-icon>close</mat-icon>
+          </button>
+        </header>
+
+        <div #messagesContainer class="agent-chat__messages">
+          @if (!chatStore.hasMessages()) {
+            <div class="agent-chat__empty">
+              <mat-icon>smart_toy</mat-icon>
+              <p>שלום! איך אוכל לעזור לך היום?</p>
+            </div>
+          }
+
+          @for (message of chatStore.messages(); track message.id) {
+            <article
+              class="agent-chat__message"
+              [class.agent-chat__message--user]="message.role === 'user'"
+              [class.agent-chat__message--agent]="message.role === 'agent'"
+              [class.agent-chat__message--error]="message.status === 'error'"
+            >
+              <div class="agent-chat__bubble">
+                <p>{{ message.content }}</p>
+
+                @if (message.toolsUsed?.length) {
+                  <div class="agent-chat__tools">
+                    @for (tool of message.toolsUsed; track tool.name) {
+                      <span class="agent-chat__tool-chip">
+                        {{ toolLabel(tool) }}
+                      </span>
+                    }
+                  </div>
+                }
+              </div>
+            </article>
+          }
+
+          @if (chatStore.loading()) {
+            <div class="agent-chat__typing" aria-live="polite" aria-label="העוזר חושב">
+              <span class="agent-chat__typing-dot"></span>
+              <span class="agent-chat__typing-dot"></span>
+              <span class="agent-chat__typing-dot"></span>
+              <span class="agent-chat__typing-text">חושב...</span>
+            </div>
+          }
+        </div>
+
+        <footer class="agent-chat__composer">
+          <mat-form-field appearance="outline" class="agent-chat__input">
+            <mat-label>כתוב הודעה</mat-label>
+            <textarea
+              matInput
+              rows="2"
+              [ngModel]="draft()"
+              (ngModelChange)="draft.set($event)"
+              (keydown)="onKeydown($event)"
+              [disabled]="chatStore.loading()"
+              placeholder="לדוגמה: הוסף חומוס לסל"
+            ></textarea>
+          </mat-form-field>
+
+          <button
+            mat-fab
+            color="primary"
+            type="button"
+            class="agent-chat__send"
+            aria-label="שלח הודעה"
+            [disabled]="chatStore.loading() || !draft().trim()"
+            (click)="sendMessage()"
+          >
+            <mat-icon>send</mat-icon>
+          </button>
+        </footer>
+      </section>
+    }
+
+    <button
+      mat-fab
+      color="primary"
+      type="button"
+      class="agent-chat__fab"
+      [attr.aria-expanded]="chatStore.isOpen()"
+      aria-label="פתח צ'אט עוזר AI"
+      (click)="toggleChat()"
+    >
+      <mat-icon>{{ chatStore.isOpen() ? 'close' : 'chat' }}</mat-icon>
+    </button>
+  </div>
+}
