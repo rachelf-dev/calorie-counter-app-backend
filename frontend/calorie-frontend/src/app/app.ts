@@ -1,12 +1,13 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 
+import { AgentChatComponent } from './features/agent/agent-chat.component';
 import { NavbarComponent } from './shared/navbar/navbar.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, NavbarComponent],
+  imports: [RouterOutlet, NavbarComponent, AgentChatComponent],
   host: {
     dir: 'rtl',
     lang: 'he',
@@ -16,6 +17,7 @@ import { NavbarComponent } from './shared/navbar/navbar.component';
     <main class="app-main">
       <router-outlet />
     </main>
+    <app-agent-chat />
   `,
   styles: `
     :host {

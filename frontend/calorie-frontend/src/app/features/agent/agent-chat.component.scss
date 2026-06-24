@@ -1,0 +1,230 @@
+:host {
+  --agent-accent: #7ac70c;
+  --agent-accent-hover: #6bb00a;
+  --agent-surface: #ffffff;
+  --agent-bg: #fafbf8;
+  --agent-text: #1a1d1a;
+  --agent-text-secondary: #5a625a;
+  --agent-border: #eaede7;
+  --agent-shadow: 0 6px 20px rgba(26, 29, 26, 0.08);
+  --agent-radius: 12px;
+}
+
+.agent-chat {
+  position: fixed;
+  inset-block-end: 24px;
+  inset-inline-start: 24px;
+  z-index: 1100;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.agent-chat__fab {
+  box-shadow: var(--agent-shadow);
+}
+
+.agent-chat__panel {
+  width: min(380px, calc(100vw - 32px));
+  height: min(520px, calc(100vh - 120px));
+  display: flex;
+  flex-direction: column;
+  background: var(--agent-surface);
+  border: 1px solid var(--agent-border);
+  border-radius: var(--agent-radius);
+  box-shadow: var(--agent-shadow);
+  overflow: hidden;
+}
+
+.agent-chat__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 16px;
+  background: var(--agent-bg);
+  border-block-end: 1px solid var(--agent-border);
+}
+
+.agent-chat__header-text {
+  h2 {
+    margin: 0;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--agent-text);
+  }
+
+  p {
+    margin: 4px 0 0;
+    font-size: 0.85rem;
+    color: var(--agent-text-secondary);
+  }
+}
+
+.agent-chat__messages {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  background: var(--agent-bg);
+}
+
+.agent-chat__empty {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  text-align: center;
+  color: var(--agent-text-secondary);
+
+  mat-icon {
+    width: 40px;
+    height: 40px;
+    font-size: 40px;
+    color: var(--agent-accent);
+  }
+
+  p {
+    margin: 0;
+    max-width: 240px;
+  }
+}
+
+.agent-chat__message {
+  display: flex;
+}
+
+.agent-chat__message--user {
+  justify-content: flex-start;
+}
+
+.agent-chat__message--agent {
+  justify-content: flex-end;
+}
+
+.agent-chat__bubble {
+  max-width: 85%;
+  padding: 10px 14px;
+  border-radius: 12px;
+  background: var(--agent-surface);
+  border: 1px solid var(--agent-border);
+
+  p {
+    margin: 0;
+    white-space: pre-wrap;
+    word-break: break-word;
+    color: var(--agent-text);
+    line-height: 1.5;
+  }
+}
+
+.agent-chat__message--user .agent-chat__bubble {
+  background: #f2fae5;
+  border-color: #d8edb8;
+}
+
+.agent-chat__message--error .agent-chat__bubble {
+  background: #fff5f5;
+  border-color: #f5c2c4;
+}
+
+.agent-chat__tools {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-block-start: 8px;
+}
+
+.agent-chat__tool-chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  background: #f2fae5;
+  color: #5c9a09;
+  border: 1px solid #d8edb8;
+}
+
+.agent-chat__typing {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  align-self: flex-end;
+  padding: 8px 12px;
+  border-radius: 999px;
+  background: var(--agent-surface);
+  border: 1px solid var(--agent-border);
+}
+
+.agent-chat__typing-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--agent-accent);
+  animation: agent-typing 1.2s infinite ease-in-out;
+
+  &:nth-child(2) {
+    animation-delay: 0.15s;
+  }
+
+  &:nth-child(3) {
+    animation-delay: 0.3s;
+  }
+}
+
+.agent-chat__typing-text {
+  font-size: 0.8rem;
+  color: var(--agent-text-secondary);
+  margin-inline-start: 4px;
+}
+
+.agent-chat__composer {
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
+  padding: 12px;
+  border-block-start: 1px solid var(--agent-border);
+  background: var(--agent-surface);
+}
+
+.agent-chat__input {
+  flex: 1;
+  margin: 0;
+}
+
+.agent-chat__send {
+  flex-shrink: 0;
+  margin-block-end: 4px;
+}
+
+@keyframes agent-typing {
+  0%,
+  80%,
+  100% {
+    opacity: 0.35;
+    transform: translateY(0);
+  }
+
+  40% {
+    opacity: 1;
+    transform: translateY(-3px);
+  }
+}
+
+@media (max-width: 768px) {
+  .agent-chat {
+    inset-block-end: 16px;
+    inset-inline-start: 16px;
+  }
+
+  .agent-chat__panel {
+    width: calc(100vw - 32px);
+    height: min(460px, calc(100vh - 96px));
+  }
+}
