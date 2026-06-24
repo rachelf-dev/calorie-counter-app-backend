@@ -1,7 +1,7 @@
 <div class="dashboard-page">
   <header class="dashboard-header">
     <h1>לוח בקרה יומי</h1>
-    <p class="subtitle">חפש מוצר, הוסף לסל ועקוב אחרי הקלוריות שלך</p>
+    <p class="subtitle">עקוב אחרי הקלוריות שלך</p>
     <nav class="page-nav" aria-label="ניווט מהיר">
       <a mat-button routerLink="/my-products" routerLinkActive="active">
         <mat-icon>inventory_2</mat-icon>
@@ -36,14 +36,6 @@
     <p class="error-banner" role="alert">{{ error }}</p>
   }
 
-  <section class="search-section">
-    <app-product-search
-      [initialSearch]="initialSearch"
-      (searchChange)="onSearchChange($event)"
-      (productSelected)="onProductSelected($event)"
-    />
-  </section>
-
   @if (todayLog$ | async; as log) {
     <section class="summary-section" aria-label="סיכום יומי">
       <mat-card
@@ -73,34 +65,6 @@
     </section>
 
     <aside class="side-panel">
-      @if (selectedProduct(); as product) {
-        <mat-card appearance="outlined" class="selected-product-card">
-          <mat-card-header>
-            <mat-card-title>מוצר נבחר</mat-card-title>
-          </mat-card-header>
-          <mat-card-content>
-            <p class="product-name">{{ product.name }}</p>
-            <p class="product-meta">
-              {{ product.caloriesPer100g | calorieFormat }} / 100 גרם
-            </p>
-            <app-unit-selector
-              [product]="product"
-              (selectionChange)="onUnitSelectionChange($event)"
-            />
-            <button
-              mat-flat-button
-              color="primary"
-              type="button"
-              class="add-btn"
-              [disabled]="!unitSelection() || (loading$ | async)"
-              (click)="addToBasket()"
-            >
-              הוסף לסל
-            </button>
-          </mat-card-content>
-        </mat-card>
-      }
-
       @if (todayLog$ | async; as log) {
         <mat-card appearance="outlined" class="progress-card">
           <mat-card-header>

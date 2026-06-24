@@ -107,13 +107,30 @@ export class ProductFormComponent implements OnInit {
     }
 
     const { name, caloriesPer100g, imageUrl, servingSizes } = this.form.getRawValue();
+    const parsedCalories = Number(caloriesPer100g);
+    const parsedServingSizes = servingSizes.map((size) => ({
+      unit: size['unit'],
+      weightInGrams: Number(size['weightInGrams']),
+    }));
+
+    if (!Number.isFinite(parsedCalories) || parsedCalories < 1) {
+      this.toastr.error('יש להזין לפחות 1 קק״ל ל-100 גרם');
+      return;
+    }
+
+    if (
+      parsedServingSizes.some(
+        (size) => !Number.isFinite(size.weightInGrams) || size.weightInGrams < 0.1
+      )
+    ) {
+      this.toastr.error('משקל יחידה חייב להיות לפחות 0.1 גרם');
+      return;
+    }
+
     const payload = {
       name: name.trim(),
-      caloriesPer100g: Number(caloriesPer100g),
-      servingSizes: servingSizes.map((size) => ({
-        unit: size['unit'],
-        weightInGrams: Number(size['weightInGrams']),
-      })),
+      caloriesPer100g: parsedCalories,
+      servingSizes: parsedServingSizes,
       ...(imageUrl.trim() ? { imageUrl: imageUrl.trim() } : {}),
     };
 

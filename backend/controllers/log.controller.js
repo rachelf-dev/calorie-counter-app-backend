@@ -95,11 +95,19 @@ async function addToBasket(req, res, next) {
       return res.status(400).json({ message: 'Invalid unit for this product' });
     }
 
-    const calories = Product.calculateCalories(
-      quantity,
-      servingSize.weightInGrams,
-      product.caloriesPer100g
-    );
+    let calories;
+
+    try {
+      calories = Product.calculateCalories(
+        quantity,
+        servingSize.weightInGrams,
+        product.caloriesPer100g
+      );
+    } catch (error) {
+      return res.status(400).json({
+        message: 'לא ניתן לחשב קלוריות — בדוק את קלוריות ל-100g ומשקל היחידה',
+      });
+    }
 
     log.items.push({
       productId: product._id,

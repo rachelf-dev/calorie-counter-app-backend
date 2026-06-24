@@ -107,6 +107,41 @@ describe('Products + Logs integration', () => {
     expect(addToBasket.body.items[0].productName).toBe('My Homemade Salad');
     expect(addToBasket.body.items[0].calories).toBe(90);
     expect(addToBasket.body.totalCaloriesConsumed).toBe(90);
+    expect(addToBasket.body.items[0].calories).toBeGreaterThan(0);
+  });
+
+  it('rejects private product with zero unit weight', async () => {
+    const user = await createUser({ email: 'zero-weight@example.com' });
+    const token = signToken(user);
+
+    const response = await request(app)
+      .post('/api/products')
+      .set(authHeader(token))
+      .send({
+        name: 'Invalid Zero Weight',
+        caloriesPer100g: 100,
+        servingSizes: [{ unit: 'cup', weightInGrams: 0 }],
+      });
+
+    expect(response.status).toBe(400);
+    expect(response.body.message).toBe('Validation failed');
+  });
+
+  it('rejects private product with zero calories per 100g', async () => {
+    const user = await createUser({ email: 'zero-cal@example.com' });
+    const token = signToken(user);
+
+    const response = await request(app)
+      .post('/api/products')
+      .set(authHeader(token))
+      .send({
+        name: 'Invalid Zero Calories',
+        caloriesPer100g: 0,
+        servingSizes: [{ unit: 'cup', weightInGrams: 100 }],
+      });
+
+    expect(response.status).toBe(400);
+    expect(response.body.message).toBe('Validation failed');
   });
 
   it('reflects goalMet=false when consumption exceeds calorie target', async () => {

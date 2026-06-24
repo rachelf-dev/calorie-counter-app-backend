@@ -204,11 +204,19 @@ function buildToolExecutors(user) {
           };
         }
 
-        const calories = Product.calculateCalories(
-          quantity,
-          servingSize.weightInGrams,
-          product.caloriesPer100g
-        );
+        let calories;
+
+        try {
+          calories = Product.calculateCalories(
+            quantity,
+            servingSize.weightInGrams,
+            product.caloriesPer100g
+          );
+        } catch (error) {
+          return {
+            error: 'לא ניתן לחשב קלוריות — בדוק את קלוריות ל-100g ומשקל היחידה',
+          };
+        }
 
         log.items.push({
           productId: product._id,

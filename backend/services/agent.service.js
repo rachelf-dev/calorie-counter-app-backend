@@ -2,7 +2,7 @@ const { GoogleGenAI } = require('@google/genai');
 
 const { functionDeclarations, buildToolExecutors } = require('./agent.tools');
 
-const MODEL = 'gemini-2.5-flash';
+const MODEL = 'gemini-1.5-flash';
 const MAX_TOOL_ITERATIONS = 5;
 
 const SYSTEM_INSTRUCTION = `אתה עוזר AI לאפליקציית ספירת קלוריות.
@@ -22,7 +22,7 @@ function getClient() {
   }
 
   if (!aiClient) {
-    aiClient = new GoogleGenAI({ apiKey });
+    aiClient = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
   }
 
   return aiClient;
@@ -41,6 +41,83 @@ function buildInitialContents(message, history = []) {
   return [...mapHistoryToContents(history), { role: 'user', parts: [{ text: message.trim() }] }];
 }
 
+function extractFunctionCalls(response) {
+  const accessorCalls = response.functionCalls;
+  if (accessorCalls?.length) {
+    return accessorCalls;
+  }
+
+  const parts = response.candidates?.[0]?.content?.parts ?? [];
+  return parts
+    .filter((part) => part.functionCall?.name)
+    .map((part) => part.functionCall);
+}
+
+function appendModelTurn(contents, response) {
+  const modelContent = response.candidates?.[0]?.content;
+
+  if (modelContent?.parts?.length) {
+    const parts = modelContent.parts.filter(
+      (part) =>
+        part.functionCall ||
+        (typeof part.text === 'string' && part.text.trim().length > 0)
+    );
+
+    if (parts.length > 0) {
+      contents.push({
+        role: modelContent.role || 'model',
+        parts,
+      });
+      return;
+    }
+  }
+
+  const functionCalls = extractFunctionCalls(response);
+  if (functionCalls.length > 0) {
+    contents.push({
+      role: 'model',
+      parts: functionCalls.map((call) => ({ functionCall: call })),
+    });
+  }
+}
+
+function buildFunctionResponsePart(call, result) {
+  const functionResponse = {
+    name: call.name,
+    response: result,
+  };
+
+  if (call.id) {
+    functionResponse.id = call.id;
+  }
+
+  return { functionResponse };
+}
+
+async function executeFunctionCall(call, executors, toolsUsed) {
+  const executor = executors[call.name];
+  let result;
+
+  if (!executor) {
+    result = { error: `Unknown tool: ${call.name}` };
+  } else {
+    try {
+      result = await executor(call.args || {});
+    } catch (error) {
+      result = { error: error.message || `Failed to execute ${call.name}` };
+    }
+  }
+
+  toolsUsed.push({
+    name: call.name,
+    status: result?.error ? 'error' : 'success',
+    args: call.args,
+    result,
+  });
+
+  return buildFunctionResponsePart(call, result);
+}
+
 async function runAgent({ message, history = [], user }) {
   if (!message?.trim()) {
     throw Object.assign(new Error('Message is required'), { statusCode: 400 });
@@ -51,64 +128,53 @@ async function runAgent({ message, history = [], user }) {
   const contents = buildInitialContents(message, history);
   const toolsUsed = [];
 
-  let response;
+  const generateConfig = {
+    systemInstruction: SYSTEM_INSTRUCTION,
+    tools: [{ functionDeclarations }],
+  };
 
-  for (let iteration = 0; iteration < MAX_TOOL_ITERATIONS; iteration += 1) {
+  let response;
+  let iteration = 0;
+  let lastResponseRequestedTools = false;
+
+  while (iteration < MAX_TOOL_ITERATIONS) {
     response = await ai.models.generateContent({
       model: MODEL,
       contents,
-      config: {
-        systemInstruction: SYSTEM_INSTRUCTION,
-        tools: [{ functionDeclarations }],
-      },
+      config: generateConfig,
     });
+    iteration += 1;
 
-    const functionCalls = response.functionCalls;
+    const functionCalls = extractFunctionCalls(response);
 
-    if (!functionCalls?.length) {
+    // No tool calls (text-only or empty): exit immediately — do not send another API request.
+    if (!functionCalls.length) {
+      lastResponseRequestedTools = false;
       break;
     }
 
-    contents.push({
-      role: 'model',
-      parts: functionCalls.map((call) => ({ functionCall: call })),
-    });
+    lastResponseRequestedTools = true;
+    appendModelTurn(contents, response);
 
     const functionResponseParts = [];
 
     for (const call of functionCalls) {
-      const executor = executors[call.name];
-
-      let result;
-
-      if (!executor) {
-        result = { error: `Unknown tool: ${call.name}` };
-      } else {
-        try {
-          result = await executor(call.args || {});
-        } catch (error) {
-          result = { error: error.message || `Failed to execute ${call.name}` };
-        }
-      }
-
-      toolsUsed.push({
-        name: call.name,
-        status: result?.error ? 'error' : 'success',
-        args: call.args,
-        result,
-      });
-
-      functionResponseParts.push({
-        functionResponse: {
-          name: call.name,
-          response: result,
-        },
-      });
+      const part = await executeFunctionCall(call, executors, toolsUsed);
+      functionResponseParts.push(part);
     }
 
     contents.push({
       role: 'user',
       parts: functionResponseParts,
+    });
+  }
+
+  // Tool loop exhausted while the model still requested tools — one final text-only call.
+  if (lastResponseRequestedTools) {
+    response = await ai.models.generateContent({
+      model: MODEL,
+      contents,
+      config: { systemInstruction: SYSTEM_INSTRUCTION },
     });
   }
 

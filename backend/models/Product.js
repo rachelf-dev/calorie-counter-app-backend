@@ -10,7 +10,7 @@ const servingSizeSchema = new mongoose.Schema(
     weightInGrams: {
       type: Number,
       required: true,
-      min: 0,
+      min: 0.1,
     },
   },
   { _id: false }
@@ -26,7 +26,7 @@ const productSchema = new mongoose.Schema(
     caloriesPer100g: {
       type: Number,
       required: true,
-      min: 0,
+      min: 1,
     },
     servingSizes: {
       type: [servingSizeSchema],
@@ -75,7 +75,16 @@ productSchema.statics.findGlobalAndUserProducts = function (userId, search = '')
 };
 
 productSchema.statics.calculateCalories = function (quantity, weightInGrams, caloriesPer100g) {
-  return (quantity * weightInGrams * caloriesPer100g) / 100;
+  const qty = Number(quantity);
+  const weight = Number(weightInGrams);
+  const calPer100 = Number(caloriesPer100g);
+  const raw = (qty * weight * calPer100) / 100;
+
+  if (!Number.isFinite(raw) || raw < 0) {
+    throw new Error('Cannot calculate calories — check calories per 100g and unit weight');
+  }
+
+  return Math.round(raw);
 };
 
 module.exports = mongoose.model('Product', productSchema);

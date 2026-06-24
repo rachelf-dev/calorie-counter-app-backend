@@ -36,7 +36,7 @@ export interface AddToBasketDialogData {
         mat-flat-button
         color="primary"
         type="button"
-        [disabled]="!selection() || adding()"
+        [disabled]="!selection() || adding() || (selection()?.estimatedCalories ?? 0) <= 0"
         (click)="addToBasket()"
       >
         הוסף לסל
@@ -72,6 +72,11 @@ export class AddToBasketDialogComponent {
     const unitSelection = this.selection();
 
     if (!unitSelection) {
+      return;
+    }
+
+    if (unitSelection.estimatedCalories <= 0) {
+      this.toastr.warning('לא ניתן לחשב קלוריות — בדוק את קלוריות ל-100g ומשקל היחידה');
       return;
     }
 

@@ -10,13 +10,13 @@ const router = express.Router();
 const createProductValidators = [
   body('name').trim().notEmpty().withMessage('Name is required'),
   body('caloriesPer100g')
-    .isFloat({ min: 0 })
-    .withMessage('Calories per 100g must be a positive number'),
+    .isFloat({ min: 1 })
+    .withMessage('Calories per 100g must be at least 1'),
   body('servingSizes').isArray({ min: 1 }).withMessage('At least one serving size is required'),
   body('servingSizes.*.unit').trim().notEmpty().withMessage('Serving size unit is required'),
   body('servingSizes.*.weightInGrams')
-    .isFloat({ min: 0 })
-    .withMessage('Serving size weight must be a positive number'),
+    .isFloat({ min: 0.1 })
+    .withMessage('Serving size weight must be at least 0.1 grams'),
   body('imageUrl').optional({ values: 'falsy' }).isString().withMessage('Image URL must be a string'),
 ];
 
