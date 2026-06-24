@@ -151,4 +151,6 @@ module.exports = {
   getHistory,
   addToBasket,
   removeFromBasket,
+  getTodayDateString,
+  getOrCreateLogForDate,
 };
