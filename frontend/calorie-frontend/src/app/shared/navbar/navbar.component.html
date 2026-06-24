@@ -19,18 +19,16 @@
       </div>
 
       <mat-nav-list>
-        @if (isAdmin$ | async; as isAdmin) {
-          @for (link of visibleLinks(isAdmin); track link.path) {
-            <a
-              mat-list-item
-              [routerLink]="link.path"
-              routerLinkActive="active"
-              (click)="closeSidenav()"
-            >
-              <mat-icon matListItemIcon>{{ link.icon }}</mat-icon>
-              <span matListItemTitle>{{ link.label }}</span>
-            </a>
-          }
+        @for (link of visibleLinks(isAdmin(), currentUrl()); track link.path) {
+          <a
+            mat-list-item
+            [routerLink]="link.path"
+            routerLinkActive="active"
+            (click)="closeSidenav()"
+          >
+            <mat-icon matListItemIcon>{{ link.icon }}</mat-icon>
+            <span matListItemTitle>{{ link.label }}</span>
+          </a>
         }
         <a mat-list-item (click)="logout()">
           <mat-icon matListItemIcon>logout</mat-icon>
@@ -48,18 +46,16 @@
 
         @if (!isMobile()) {
           <nav class="desktop-nav" aria-label="ניווט ראשי">
-            @if (isAdmin$ | async; as isAdmin) {
-              @for (link of visibleLinks(isAdmin); track link.path) {
-                <a
-                  mat-button
-                  [routerLink]="link.path"
-                  routerLinkActive="active"
-                  class="nav-link"
-                >
-                  <mat-icon>{{ link.icon }}</mat-icon>
-                  {{ link.label }}
-                </a>
-              }
+            @for (link of visibleLinks(isAdmin(), currentUrl()); track link.path) {
+              <a
+                mat-button
+                [routerLink]="link.path"
+                routerLinkActive="active"
+                class="nav-link"
+              >
+                <mat-icon>{{ link.icon }}</mat-icon>
+                {{ link.label }}
+              </a>
             }
           </nav>
         }

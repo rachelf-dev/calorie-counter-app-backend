@@ -1,10 +1,10 @@
 import { AsyncPipe } from '@angular/common';
 import { Component, DestroyRef, inject, OnInit, signal } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { RouterLink, RouterLinkActive } from '@angular/router';
+import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
+import { NavigationEnd, Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { BreakpointObserver } from '@angular/cdk/layout';
 import { Store } from '@ngrx/store';
-import { map } from 'rxjs';
+import { filter, map } from 'rxjs';
 
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
@@ -49,13 +49,15 @@ export class NavbarComponent implements OnInit {
   private readonly userService = inject(UserService);
   private readonly breakpointObserver = inject(BreakpointObserver);
   private readonly destroyRef = inject(DestroyRef);
+  private readonly router = inject(Router);
 
   readonly user$ = this.store.select(selectAuthUser);
   readonly isAuthenticated$ = this.store.select(selectIsAuthenticated);
-  readonly isAdmin$ = this.store.select(selectIsAdmin);
+  readonly isAdmin = toSignal(this.store.select(selectIsAdmin), { initialValue: false });
 
   readonly isMobile = signal(false);
   readonly sidenavOpen = signal(false);
+  readonly currentUrl = signal(this.router.url);
 
   readonly navLinks: NavLink[] = [
     { label: 'לוח בקרה', path: '/dashboard', icon: 'dashboard' },
@@ -66,11 +68,26 @@ export class NavbarComponent implements OnInit {
     { label: 'ניהול', path: '/admin', icon: 'admin_panel_settings', adminOnly: true },
   ];
 
-  visibleLinks(isAdmin: boolean): NavLink[] {
-    return this.navLinks.filter((link) => !link.adminOnly || isAdmin);
+  visibleLinks(isAdmin: boolean, url: string): NavLink[] {
+    return this.navLinks
+      .filter((link) => !link.adminOnly || isAdmin)
+      .filter((link) => !this.isActivePage(link.path, url));
+  }
+
+  private isActivePage(path: string, url: string): boolean {
+    const clean = url.split('?')[0].split('#')[0];
+    return clean === path || clean.startsWith(path + '/');
   }
 
   ngOnInit(): void {
+    this.router.events
+      .pipe(
+        filter((e): e is NavigationEnd => e instanceof NavigationEnd),
+        map((e) => e.urlAfterRedirects),
+        takeUntilDestroyed(this.destroyRef)
+      )
+      .subscribe((url) => this.currentUrl.set(url));
+
     this.breakpointObserver
       .observe('(max-width: 768px)')
       .pipe(
